@@ -1,0 +1,58 @@
+/*
+ * 화면 공통 스타일.
+ *
+ * 인라인 style="..." 속성을 쓰지 않는 이유:
+ * CSP에서 style-src 를 'self' 로만 두려면 인라인 스타일이 없어야 한다.
+ * 'unsafe-inline' 을 허용하면 주입된 style 속성까지 함께 허용되므로,
+ * CSP가 막아줄 수 있는 공격 경로가 도로 열린다.
+ */
+
+.page {
+	margin-top: 3rem;
+}
+
+.page-tall {
+	margin-top: 4rem;
+}
+
+.page-hero {
+	margin-top: 6rem;
+}
+
+.page-login {
+	max-width: 420px;
+}
+
+.page-signup {
+	max-width: 480px;
+}
+
+.page-error {
+	max-width: 520px;
+}
+
+.page-form {
+	max-width: 720px;
+}
+
+.page-board {
+	max-width: 860px;
+}
+
+/* 게시글 본문: 저장된 줄바꿈을 그대로 보여주되 HTML로 해석하지는 않는다 */
+.post-content {
+	white-space: pre-wrap;
+}
+
+/* 목록 표의 열 너비 */
+.col-no {
+	width: 6rem;
+}
+
+.col-author {
+	width: 9rem;
+}
+
+.col-date {
+	width: 11rem;
+}

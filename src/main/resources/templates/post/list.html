@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security" lang="ko">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>게시글 목록 · 보안 게시판</title>
+	<link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
+	<link th:href="@{/css/app.css}" rel="stylesheet">
+</head>
+<body class="bg-light">
+<div class="container page page-board">
+
+	<div class="d-flex justify-content-between align-items-center mb-4">
+		<h1 class="h3 mb-0">게시글</h1>
+		<div>
+			<span sec:authorize="isAuthenticated()" class="me-2">
+				<strong sec:authentication="name">사용자</strong>님
+			</span>
+			<a sec:authorize="isAuthenticated()" th:href="@{/posts/new}" class="btn btn-primary btn-sm">글쓰기</a>
+			<form sec:authorize="isAuthenticated()" th:action="@{/auth/logout}" method="post" class="d-inline">
+				<button type="submit" class="btn btn-outline-secondary btn-sm">로그아웃</button>
+			</form>
+			<a sec:authorize="!isAuthenticated()" th:href="@{/auth/login}" class="btn btn-primary btn-sm">로그인</a>
+			<a sec:authorize="!isAuthenticated()" th:href="@{/auth/signup}" class="btn btn-outline-primary btn-sm">회원가입</a>
+		</div>
+	</div>
+
+	<div class="alert alert-secondary" th:if="${posts.totalElements == 0}">
+		아직 등록된 게시글이 없습니다.
+	</div>
+
+	<table class="table table-hover bg-white" th:if="${posts.totalElements > 0}">
+		<thead>
+		<tr>
+			<th scope="col" class="col-no">번호</th>
+			<th scope="col">제목</th>
+			<th scope="col" class="col-author">작성자</th>
+			<th scope="col" class="col-date">작성일</th>
+		</tr>
+		</thead>
+		<tbody>
+		<tr th:each="post : ${posts.content}">
+			<td th:text="${post.id}">1</td>
+			<!-- th:text 이므로 제목에 태그가 들어와도 이스케이프되어 그대로 보인다 -->
+			<td><a th:href="@{/posts/{id}(id=${post.id})}" th:text="${post.title}">제목</a></td>
+			<td th:text="${post.author.username}">작성자</td>
+			<td th:text="${#temporals.format(post.createdAt, 'yyyy-MM-dd HH:mm')}">2026-08-20</td>
+		</tr>
+		</tbody>
+	</table>
+
+	<nav th:if="${posts.totalPages > 1}" aria-label="페이지 이동">
+		<ul class="pagination justify-content-center">
+			<li class="page-item" th:classappend="${posts.first} ? 'disabled'">
+				<a class="page-link" th:href="@{/posts(page=${posts.number - 1})}">이전</a>
+			</li>
+			<li class="page-item"
+			    th:each="i : ${#numbers.sequence(0, posts.totalPages - 1)}"
+			    th:classappend="${i == posts.number} ? 'active'">
+				<a class="page-link" th:href="@{/posts(page=${i})}" th:text="${i + 1}">1</a>
+			</li>
+			<li class="page-item" th:classappend="${posts.last} ? 'disabled'">
+				<a class="page-link" th:href="@{/posts(page=${posts.number + 1})}">다음</a>
+			</li>
+		</ul>
+	</nav>
+
+</div>
+</body>
+</html>

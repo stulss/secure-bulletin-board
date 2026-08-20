@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>오류 · 보안 게시판</title>
+	<link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
+	<link th:href="@{/css/app.css}" rel="stylesheet">
+</head>
+<body class="bg-light">
+<div class="container text-center page-hero page-error">
+	<h1 class="display-4" th:text="${status}">403</h1>
+	<p class="lead" th:text="${message}">접근할 수 없습니다.</p>
+	<a th:href="@{/posts}" class="btn btn-primary mt-3">목록으로</a>
+</div>
+</body>
+</html>

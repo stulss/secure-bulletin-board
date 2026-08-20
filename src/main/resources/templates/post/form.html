@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title th:text="${mode == 'edit'} ? '글 수정 · 보안 게시판' : '글쓰기 · 보안 게시판'">글쓰기</title>
+	<link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
+	<link th:href="@{/css/app.css}" rel="stylesheet">
+</head>
+<body class="bg-light">
+<div class="container page page-form">
+
+	<h1 class="h3 mb-4" th:text="${mode == 'edit'} ? '글 수정' : '글쓰기'">글쓰기</h1>
+
+	<!-- Spring Security가 _csrf hidden 필드를 자동으로 넣는다 -->
+	<form th:action="${mode == 'edit'} ? @{/posts/{id}/edit(id=${postId})} : @{/posts}"
+	      th:object="${postForm}" method="post" novalidate>
+
+		<div class="mb-3">
+			<label for="title" class="form-label">제목</label>
+			<input type="text" class="form-control" id="title" th:field="*{title}"
+			       required maxlength="200" autofocus>
+			<div class="form-text text-danger" th:if="${#fields.hasErrors('title')}"
+			     th:errors="*{title}"></div>
+		</div>
+
+		<div class="mb-4">
+			<label for="content" class="form-label">본문</label>
+			<textarea class="form-control" id="content" th:field="*{content}" rows="12" required></textarea>
+			<div class="form-text text-danger" th:if="${#fields.hasErrors('content')}"
+			     th:errors="*{content}"></div>
+		</div>
+
+		<div class="d-flex gap-2">
+			<button type="submit" class="btn btn-primary"
+			        th:text="${mode == 'edit'} ? '수정하기' : '등록하기'">등록하기</button>
+			<a th:href="${mode == 'edit'} ? @{/posts/{id}(id=${postId})} : @{/posts}"
+			   class="btn btn-outline-secondary">취소</a>
+		</div>
+	</form>
+
+</div>
+</body>
+</html>

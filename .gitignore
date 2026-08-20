@@ -1,0 +1,57 @@
+# Gradle
+.gradle/
+build/
+out/
+
+# IDE
+.idea/
+*.iml
+*.iws
+*.ipr
+
+# VS Code
+.vscode/
+*.code-workspace
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Java
+*.class
+*.jar
+*.war
+
+# Gradle Wrapper 바이너리는 반드시 커밋한다.
+# 이게 없으면 clone 한 환경(CI·배포 서버)에서 ./gradlew 가 실행되지 않는다.
+!gradle/wrapper/gradle-wrapper.jar
+*.ear
+*.zip
+*.tar.gz
+
+# Logs
+*.log
+logs/
+
+# Local
+application-local.yml
+.env
+.env.local
+
+# Node (React)
+node_modules/
+dist/
+.cache/
+package-lock.json
+yarn.lock
+
+# Database
+*.db
+*.h2.db
+
+# Newman 실행 결과 (콜렉션·환경 파일은 커밋하되 결과물은 제외)
+postman/results/
+newman/
+
+# Obsidian 볼트 설정 (개인 작업 환경 — 다이어그램.canvas 는 커밋한다)
+.obsidian/

@@ -1,0 +1,843 @@
+{
+	"info": {
+		"name": "Secure Bulletin Board API",
+		"description": "Spring Security 기반 보안 게시판의 API·보안 테스트 콜렉션.\n\n이 프로젝트는 JWT가 아니라 **세션 쿠키(JSESSIONID) + CSRF 토큰 + 폼 전송** 방식이다.\n- 요청 본문은 application/x-www-form-urlencoded\n- 상태 변경 요청에는 _csrf 토큰이 필요하며, 콜렉션 Pre-request Script가 로그인 페이지에서 자동으로 긁어와 채운다\n- 응답은 JSON이 아니라 302 리다이렉트 또는 HTML이므로, 각 요청은 followRedirects=false 로 두고 상태 코드와 Location 헤더를 검증한다\n\n순서대로 실행해야 한다 (Collection Runner 또는 newman). 앞 요청이 뒤 요청의 변수(postId 등)를 채운다.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"variable": [
+		{ "key": "baseUrl", "value": "http://localhost:8080/api" },
+		{ "key": "runId", "value": "" },
+		{ "key": "aliceUser", "value": "" },
+		{ "key": "bobUser", "value": "" },
+		{ "key": "csrfToken", "value": "" },
+		{ "key": "postId", "value": "" },
+		{ "key": "xssPostId", "value": "" },
+		{ "key": "aliceTitle", "value": "앨리스의 글" }
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					"// 상태 변경 요청(_csrf 필드를 가진 요청)에만 CSRF 토큰을 새로 발급받아 채운다.",
+					"// _csrf 를 일부러 뺀 요청(CSRF 방어 테스트)은 여기서 건너뛰므로 토큰 없이 전송된다.",
+					"const raw = pm.request.body ? JSON.stringify(pm.request.body) : '';",
+					"if (pm.request.method === 'POST' && raw.indexOf('csrfToken') !== -1) {",
+					"    pm.sendRequest({",
+					"        url: pm.collectionVariables.get('baseUrl') + '/auth/login',",
+					"        method: 'GET'",
+					"    }, function (err, res) {",
+					"        if (err) { console.log('CSRF 발급 실패: ' + err); return; }",
+					"        const m = res.text().match(/name=\"_csrf\"\\s+value=\"([^\"]+)\"/);",
+					"        if (m) { pm.collectionVariables.set('csrfToken', m[1]); }",
+					"        else { console.log('응답에서 _csrf 를 찾지 못했습니다'); }",
+					"    });",
+					"}"
+				]
+			}
+		}
+	],
+	"item": [
+		{
+			"name": "00. 준비",
+			"item": [
+				{
+					"name": "0-1. 서버 확인 및 실행 ID 생성",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test('서버가 응답한다 (200)', function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"// 같은 서버에 여러 번 실행해도 사용자명이 겹치지 않도록 실행마다 접미사를 만든다",
+									"const runId = String(Date.now()).slice(-6);",
+									"pm.collectionVariables.set('runId', runId);",
+									"pm.collectionVariables.set('aliceUser', 'alice' + runId);",
+									"pm.collectionVariables.set('bobUser', 'bob' + runId);",
+									"console.log('이번 실행 사용자: ' + pm.collectionVariables.get('aliceUser') + ', ' + pm.collectionVariables.get('bobUser'));"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": { "raw": "{{baseUrl}}/posts", "host": ["{{baseUrl}}"], "path": ["posts"] },
+						"description": "게시글 목록은 비로그인도 열람 가능하므로 서버 기동 확인용으로 쓴다."
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "01. 인증 (Auth)",
+			"item": [
+				{
+					"name": "1-1. 회원가입 — alice",
+					"protocolProfileBehavior": { "followRedirects": false },
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test('가입 성공 시 302 리다이렉트', function () {",
+									"    pm.response.to.have.status(302);",
+									"});",
+									"",
+									"pm.test('로그인 페이지로 이동하며 가입 성공을 알린다', function () {",
+									"    pm.expect(pm.response.headers.get('Location')).to.include('/auth/login?signup=true');",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{ "key": "username", "value": "{{aliceUser}}" },
+								{ "key": "email", "value": "{{aliceUser}}@example.com" },
+								{ "key": "password", "value": "password123" },
+								{ "key": "passwordConfirm", "value": "password123" },
+								{ "key": "_csrf", "value": "{{csrfToken}}" }
+							]
+						},
+						"url": { "raw": "{{baseUrl}}/auth/signup", "host": ["{{baseUrl}}"], "path": ["auth", "signup"] }
+					},
+					"response": []
+				},
+				{
+					"name": "1-2. 회원가입 — bob",
+					"protocolProfileBehavior": { "followRedirects": false },
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test('가입 성공 시 302 리다이렉트', function () {",
+									"    pm.response.to.have.status(302);",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{ "key": "username", "value": "{{bobUser}}" },
+								{ "key": "email", "value": "{{bobUser}}@example.com" },
+								{ "key": "password", "value": "password123" },
+								{ "key": "passwordConfirm", "value": "password123" },
+								{ "key": "_csrf", "value": "{{csrfToken}}" }
+							]
+						},
+						"url": { "raw": "{{baseUrl}}/auth/signup", "host": ["{{baseUrl}}"], "path": ["auth", "signup"] }
+					},
+					"response": []
+				},
+				{
+					"name": "1-3. 회원가입 실패 — 중복 사용자명",
+					"protocolProfileBehavior": { "followRedirects": false },
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test('리다이렉트되지 않고 폼으로 되돌아온다 (200)', function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test('중복 사용자명이라는 오류가 표시된다', function () {",
+									"    pm.expect(pm.response.text()).to.include('이미 사용 중인 사용자명');",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{ "key": "username", "value": "{{aliceUser}}" },
+								{ "key": "email", "value": "another-{{aliceUser}}@example.com" },
+								{ "key": "password", "value": "password123" },
+								{ "key": "passwordConfirm", "value": "password123" },
+								{ "key": "_csrf", "value": "{{csrfToken}}" }
+							]
+						},
+						"url": { "raw": "{{baseUrl}}/auth/signup", "host": ["{{baseUrl}}"], "path": ["auth", "signup"] }
+					},
+					"response": []
+				},
+				{
+					"name": "1-4. 로그인 실패 — 틀린 비밀번호",
+					"protocolProfileBehavior": { "followRedirects": false },
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test('로그인 실패 시 error 파라미터를 달고 로그인 페이지로 돌아간다', function () {",
+									"    pm.response.to.have.status(302);",
+									"    pm.expect(pm.response.headers.get('Location')).to.include('/auth/login?error=true');",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{ "key": "username", "value": "{{aliceUser}}" },
+								{ "key": "password", "value": "WRONG-PASSWORD" },
+								{ "key": "_csrf", "value": "{{csrfToken}}" }
+							]
+						},
+						"url": { "raw": "{{baseUrl}}/auth/login", "host": ["{{baseUrl}}"], "path": ["auth", "login"] }
+					},
+					"response": []
+				},
+				{
+					"name": "1-5. 로그인 — alice",
+					"protocolProfileBehavior": { "followRedirects": false },
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test('로그인 성공 시 게시글 목록으로 이동한다', function () {",
+									"    pm.response.to.have.status(302);",
+									"    pm.expect(pm.response.headers.get('Location')).to.include('/posts');",
+									"});",
+									"",
+									"pm.test('세션 쿠키(JSESSIONID)가 발급된다', function () {",
+									"    pm.expect(pm.cookies.has('JSESSIONID')).to.be.true;",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{ "key": "username", "value": "{{aliceUser}}" },
+								{ "key": "password", "value": "password123" },
+								{ "key": "_csrf", "value": "{{csrfToken}}" }
+							]
+						},
+						"url": { "raw": "{{baseUrl}}/auth/login", "host": ["{{baseUrl}}"], "path": ["auth", "login"] }
+					},
+					"response": []
+				},
+				{
+					"name": "1-6. 로그인 상태 확인 (GET /auth/me)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test('200 OK', function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test('현재 로그인한 사용자가 alice 다', function () {",
+									"    pm.expect(pm.response.json().username).to.eql(pm.collectionVariables.get('aliceUser'));",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": { "raw": "{{baseUrl}}/auth/me", "host": ["{{baseUrl}}"], "path": ["auth", "me"] }
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "02. 게시글 (Posts)",
+			"item": [
+				{
+					"name": "2-1. 글 작성",
+					"protocolProfileBehavior": { "followRedirects": false },
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test('작성 성공 시 상세 페이지로 이동한다', function () {",
+									"    pm.response.to.have.status(302);",
+									"});",
+									"",
+									"pm.test('생성된 글 ID를 Location에서 얻는다', function () {",
+									"    const loc = pm.response.headers.get('Location');",
+									"    const id = loc.split('/').pop();",
+									"    pm.expect(id).to.match(/^[0-9]+$/);",
+									"    pm.collectionVariables.set('postId', id);",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{ "key": "title", "value": "{{aliceTitle}}" },
+								{ "key": "content", "value": "앨리스가 작성한 본문입니다." },
+								{ "key": "_csrf", "value": "{{csrfToken}}" }
+							]
+						},
+						"url": { "raw": "{{baseUrl}}/posts", "host": ["{{baseUrl}}"], "path": ["posts"] }
+					},
+					"response": []
+				},
+				{
+					"name": "2-2. 글 상세 조회",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test('200 OK', function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test('작성한 제목이 보인다', function () {",
+									"    pm.expect(pm.response.text()).to.include(pm.collectionVariables.get('aliceTitle'));",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": { "raw": "{{baseUrl}}/posts/{{postId}}", "host": ["{{baseUrl}}"], "path": ["posts", "{{postId}}"] }
+					},
+					"response": []
+				},
+				{
+					"name": "2-3. 글 목록 조회",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test('200 OK', function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test('방금 쓴 글이 목록에 있다', function () {",
+									"    pm.expect(pm.response.text()).to.include(pm.collectionVariables.get('aliceTitle'));",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": { "raw": "{{baseUrl}}/posts", "host": ["{{baseUrl}}"], "path": ["posts"] }
+					},
+					"response": []
+				},
+				{
+					"name": "2-4. 글 작성 실패 — 제목 없음",
+					"protocolProfileBehavior": { "followRedirects": false },
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test('저장되지 않고 폼으로 되돌아온다 (200)', function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test('제목 필수 오류가 표시된다', function () {",
+									"    pm.expect(pm.response.text()).to.include('제목은 필수입니다');",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{ "key": "title", "value": "" },
+								{ "key": "content", "value": "제목이 비어 있는 글" },
+								{ "key": "_csrf", "value": "{{csrfToken}}" }
+							]
+						},
+						"url": { "raw": "{{baseUrl}}/posts", "host": ["{{baseUrl}}"], "path": ["posts"] }
+					},
+					"response": []
+				},
+				{
+					"name": "2-5. 본인 글 수정",
+					"protocolProfileBehavior": { "followRedirects": false },
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test('수정 성공 시 상세 페이지로 이동한다', function () {",
+									"    pm.response.to.have.status(302);",
+									"    pm.expect(pm.response.headers.get('Location')).to.include('/posts/' + pm.collectionVariables.get('postId'));",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{ "key": "title", "value": "{{aliceTitle}} (수정됨)" },
+								{ "key": "content", "value": "본인이 수정한 본문입니다." },
+								{ "key": "_csrf", "value": "{{csrfToken}}" }
+							]
+						},
+						"url": { "raw": "{{baseUrl}}/posts/{{postId}}/edit", "host": ["{{baseUrl}}"], "path": ["posts", "{{postId}}", "edit"] }
+					},
+					"response": []
+				},
+				{
+					"name": "2-6. 수정 반영 확인",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test('수정된 제목이 반영되어 있다', function () {",
+									"    pm.expect(pm.response.text()).to.include(pm.collectionVariables.get('aliceTitle') + ' (수정됨)');",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": { "raw": "{{baseUrl}}/posts/{{postId}}", "host": ["{{baseUrl}}"], "path": ["posts", "{{postId}}"] }
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "03. 보안 테스트 (Penetration Tests)",
+			"item": [
+				{
+					"name": "3-1. CSRF — 토큰 없이 글 작성",
+					"protocolProfileBehavior": { "followRedirects": false },
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"// 이 요청에는 _csrf 필드가 없다. 콜렉션 Pre-request Script도 토큰을 채우지 않는다.",
+									"pm.test('CSRF 토큰이 없으면 403으로 거부된다', function () {",
+									"    pm.response.to.have.status(403);",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{ "key": "title", "value": "CSRF 토큰 없는 요청" },
+								{ "key": "content", "value": "이 글은 저장되면 안 된다" }
+							]
+						},
+						"url": { "raw": "{{baseUrl}}/posts", "host": ["{{baseUrl}}"], "path": ["posts"] }
+					},
+					"response": []
+				},
+				{
+					"name": "3-2. XSS — 스크립트 페이로드 저장",
+					"protocolProfileBehavior": { "followRedirects": false },
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test('페이로드가 담긴 글도 저장 자체는 성공한다 (저장이 아니라 출력에서 막는다)', function () {",
+									"    pm.response.to.have.status(302);",
+									"    pm.collectionVariables.set('xssPostId', pm.response.headers.get('Location').split('/').pop());",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{ "key": "title", "value": "<img src=x onerror=alert(1)>" },
+								{ "key": "content", "value": "<script>alert('XSS')</script>" },
+								{ "key": "_csrf", "value": "{{csrfToken}}" }
+							]
+						},
+						"url": { "raw": "{{baseUrl}}/posts", "host": ["{{baseUrl}}"], "path": ["posts"] }
+					},
+					"response": []
+				},
+				{
+					"name": "3-3. XSS — 출력이 이스케이프되는지 확인",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"const html = pm.response.text();",
+									"",
+									"pm.test('원본 script 태그가 그대로 나가지 않는다', function () {",
+									"    pm.expect(html).to.not.include(\"<script>alert('XSS')</script>\");",
+									"});",
+									"",
+									"pm.test('원본 img onerror 태그가 그대로 나가지 않는다', function () {",
+									"    pm.expect(html).to.not.include('<img src=x onerror=alert(1)>');",
+									"});",
+									"",
+									"pm.test('HTML 엔티티로 이스케이프되어 텍스트로 표시된다', function () {",
+									"    pm.expect(html).to.include('&lt;script&gt;');",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": { "raw": "{{baseUrl}}/posts/{{xssPostId}}", "host": ["{{baseUrl}}"], "path": ["posts", "{{xssPostId}}"] }
+					},
+					"response": []
+				},
+				{
+					"name": "3-4. SQL Injection — 로그인 우회 시도",
+					"protocolProfileBehavior": { "followRedirects": false },
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"' OR '1'='1 로는 인증되지 않는다\", function () {",
+									"    pm.response.to.have.status(302);",
+									"    pm.expect(pm.response.headers.get('Location')).to.include('error=true');",
+									"});",
+									"",
+									"pm.test('서버 오류(5xx)가 아니라 정상적인 인증 실패로 처리된다', function () {",
+									"    pm.expect(pm.response.code).to.be.below(500);",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{ "key": "username", "value": "' OR '1'='1" },
+								{ "key": "password", "value": "' OR '1'='1" },
+								{ "key": "_csrf", "value": "{{csrfToken}}" }
+							]
+						},
+						"url": { "raw": "{{baseUrl}}/auth/login", "host": ["{{baseUrl}}"], "path": ["auth", "login"] }
+					},
+					"response": []
+				},
+				{
+					"name": "3-5. 인가 — bob으로 로그인 (다른 사용자)",
+					"protocolProfileBehavior": { "followRedirects": false },
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test('bob 로그인 성공', function () {",
+									"    pm.response.to.have.status(302);",
+									"    pm.expect(pm.response.headers.get('Location')).to.include('/posts');",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{ "key": "username", "value": "{{bobUser}}" },
+								{ "key": "password", "value": "password123" },
+								{ "key": "_csrf", "value": "{{csrfToken}}" }
+							]
+						},
+						"url": { "raw": "{{baseUrl}}/auth/login", "host": ["{{baseUrl}}"], "path": ["auth", "login"] }
+					},
+					"response": []
+				},
+				{
+					"name": "3-6. 인가 — 타인 글 수정 시도 (403 이어야 함)",
+					"protocolProfileBehavior": { "followRedirects": false },
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test('다른 사용자의 글은 수정할 수 없다 (403)', function () {",
+									"    pm.response.to.have.status(403);",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{ "key": "title", "value": "탈취한 제목" },
+								{ "key": "content", "value": "탈취한 본문" },
+								{ "key": "_csrf", "value": "{{csrfToken}}" }
+							]
+						},
+						"url": { "raw": "{{baseUrl}}/posts/{{postId}}/edit", "host": ["{{baseUrl}}"], "path": ["posts", "{{postId}}", "edit"] },
+						"description": "bob이 alice의 글 ID를 URL에 직접 넣어 수정을 시도한다. 화면에 수정 버튼이 보이지 않더라도 이 경로는 열려 있으므로, 서버가 막아야 한다."
+					},
+					"response": []
+				},
+				{
+					"name": "3-7. 인가 — 타인 글 삭제 시도 (403 이어야 함)",
+					"protocolProfileBehavior": { "followRedirects": false },
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test('다른 사용자의 글은 삭제할 수 없다 (403)', function () {",
+									"    pm.response.to.have.status(403);",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{ "key": "_csrf", "value": "{{csrfToken}}" }
+							]
+						},
+						"url": { "raw": "{{baseUrl}}/posts/{{postId}}/delete", "host": ["{{baseUrl}}"], "path": ["posts", "{{postId}}", "delete"] }
+					},
+					"response": []
+				},
+				{
+					"name": "3-8. 인가 — 글이 실제로 변경·삭제되지 않았는지 확인",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"const html = pm.response.text();",
+									"",
+									"pm.test('글이 여전히 존재한다 (삭제되지 않았다)', function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test('원래 제목이 그대로다', function () {",
+									"    pm.expect(html).to.include(pm.collectionVariables.get('aliceTitle'));",
+									"});",
+									"",
+									"pm.test('탈취 시도한 내용이 반영되지 않았다', function () {",
+									"    pm.expect(html).to.not.include('탈취한 제목');",
+									"    pm.expect(html).to.not.include('탈취한 본문');",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": { "raw": "{{baseUrl}}/posts/{{postId}}", "host": ["{{baseUrl}}"], "path": ["posts", "{{postId}}"] },
+						"description": "403을 받았다는 사실만으로는 부족하다. 실제로 데이터가 그대로인지 확인한다."
+					},
+					"response": []
+				},
+				{
+					"name": "3-9. 존재하지 않는 글 조회 (404)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test('없는 글은 404', function () {",
+									"    pm.response.to.have.status(404);",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": { "raw": "{{baseUrl}}/posts/999999", "host": ["{{baseUrl}}"], "path": ["posts", "999999"] }
+					},
+					"response": []
+				},
+				{
+					"name": "3-10. 세션 — 로그아웃",
+					"protocolProfileBehavior": { "followRedirects": false },
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test('로그아웃되면 로그인 페이지로 이동한다', function () {",
+									"    pm.response.to.have.status(302);",
+									"    pm.expect(pm.response.headers.get('Location')).to.include('logout=true');",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{ "key": "_csrf", "value": "{{csrfToken}}" }
+							]
+						},
+						"url": { "raw": "{{baseUrl}}/auth/logout", "host": ["{{baseUrl}}"], "path": ["auth", "logout"] }
+					},
+					"response": []
+				},
+				{
+					"name": "3-11. 세션 — 로그아웃 후 보호된 페이지 접근",
+					"protocolProfileBehavior": { "followRedirects": false },
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test('로그아웃 후에는 글쓰기 페이지에 접근할 수 없다', function () {",
+									"    pm.response.to.have.status(302);",
+									"    pm.expect(pm.response.headers.get('Location')).to.include('/auth/login');",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": { "raw": "{{baseUrl}}/posts/new", "host": ["{{baseUrl}}"], "path": ["posts", "new"] }
+					},
+					"response": []
+				},
+				{
+					"name": "3-12. 세션 — 비로그인 상태로 글 작성 시도",
+					"protocolProfileBehavior": { "followRedirects": false },
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test('비로그인 작성 요청은 통과하지 못한다', function () {",
+									"    pm.expect(pm.response.code).to.be.oneOf([302, 403]);",
+									"});",
+									"",
+									"pm.test('글이 생성되지 않았다 (상세 페이지로 가는 리다이렉트가 아니다)', function () {",
+									"    const loc = pm.response.headers.get('Location') || '';",
+									"    pm.expect(loc).to.not.match(/\\/posts\\/[0-9]+$/);",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{ "key": "title", "value": "비로그인 작성 시도" },
+								{ "key": "content", "value": "저장되면 안 된다" },
+								{ "key": "_csrf", "value": "{{csrfToken}}" }
+							]
+						},
+						"url": { "raw": "{{baseUrl}}/posts", "host": ["{{baseUrl}}"], "path": ["posts"] }
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
