@@ -27,14 +27,10 @@ dependencies {
 	// Thymeleaf에서 sec:authorize 등 Security 방언 사용
 	implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity6'
 
-	// H2 Database (로컬 개발)
+	// H2 Database (로컬 개발 전용)
+	// 이 프로젝트는 로컬 실행 기준으로 완성했다. 배포용 DB 드라이버는 넣지 않는다.
+	// 배포하기로 하면 커밋 b0a2025 에 PostgreSQL/MySQL 설정이 그대로 남아 있다. (docs/05_배포.md 참고)
 	runtimeOnly 'com.h2database:h2'
-
-	// 배포용 DB 드라이버 (prod 프로파일에서만 사용)
-	// 둘 다 넣어두고, 실제로 어느 것을 쓸지는 DB_URL 환경변수가 결정한다.
-	// 드라이버는 JDBC URL 로 선택되므로 안 쓰는 쪽은 로딩되지 않는다.
-	runtimeOnly 'org.postgresql:postgresql'
-	runtimeOnly 'com.mysql:mysql-connector-j'
 
 	// Lombok (보일러플레이트 축소)
 	compileOnly 'org.projectlombok:lombok'

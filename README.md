@@ -4,7 +4,7 @@
 XSS/SQL Injection 방어를 적용한 보안 강화 웹 서비스입니다.
 
 > 국비지원 교육 과정 수료 후 취업 포트폴리오 + Spring Security 인증/인가 실습을 목적으로 기획했습니다.
-> **현재 상태: 2주차 완료 — 인증 + 게시글 CRUD + 작성자 본인 인가가 로컬에서 동작하며 테스트 31건 통과.**
+> **현재 상태: 4주차 범위까지 완료 — 로컬 실행 기준으로 완성. JUnit 36건 · Postman 39개 단언 · OWASP ZAP High 0 통과.**
 
 ## 핵심 개념
 
@@ -18,9 +18,9 @@ XSS/SQL Injection 방어를 적용한 보안 강화 웹 서비스입니다.
 |---|---|
 | Backend | Java 17, Spring Boot 3.x, Spring Security, Spring Data JPA |
 | Frontend | Thymeleaf + Bootstrap 5 (서버 렌더링, 로컬 서빙) |
-| Database | H2 인메모리 (로컬 개발), Supabase (배포 시, 나중에) |
+| Database | H2 인메모리 (로컬 전용) |
 | Build | Gradle 9.5.1 (Wrapper 포함) |
-| Test | JUnit 5, Spring Security Test, `@SpringBootTest`, OWASP ZAP(4주차) |
+| Test | JUnit 5, Spring Security Test, `@SpringBootTest`, Postman/newman, OWASP ZAP 2.17 |
 
 ## 폴더 구조
 
@@ -43,6 +43,7 @@ secure-bulletin-board/                Spring Boot 프로젝트 루트
 │        ├─ post/                     list.html · detail.html · form.html
 │        └─ error/error.html          404·403 화면
 ├─ src/test/java/com/securitybulletin/
+│  ├─ SecurityDefenseTest.java        SQLi·XSS·메서드보안·BCrypt 비가역성 (5건)
 │  ├─ user/UserServiceTest.java       BCrypt 해시 저장·salt·중복 가입 (4건)
 │  ├─ user/AuthControllerTest.java    CSRF·인증·로그인 실패 (6건)
 │  ├─ post/PostServiceTest.java       소유자 검증·페이징·404 (8건)
@@ -61,7 +62,7 @@ secure-bulletin-board/                Spring Boot 프로젝트 루트
    ├─ 02_UI_UX설계.md         화면별 명세·와이어프레임·공통 컴포넌트·접근성
    ├─ 03_백엔드구조.md         패키지 구조·계층 의존 규칙·인증/인가 흐름·예외 처리
    ├─ 04_API테스트_Postman.md  Postman 콜렉션·환경변수·침투 테스트·Newman
-   └─ 05_배포.md              1단계 로컬 개발 / 2단계 선택 배포
+   └─ 05_배포.md              배포처 조사 기록 (배포는 하지 않기로 함)
 ```
 
 ## 실행 방법
@@ -102,7 +103,7 @@ npx newman run postman/Secure_Bulletin_Board.postman_collection.json -e postman/
 | [docs/02_UI_UX설계.md](docs/02_UI_UX설계.md) | **UI/UX 설계** — 사이트맵·화면별 명세(목록/상세/작성/수정/로그인/회원가입)·공통 컴포넌트·접근성 |
 | [docs/03_백엔드구조.md](docs/03_백엔드구조.md) | **백엔드 구조** — 패키지 설계·계층 의존 규칙·인증/인가가 실제로 흐르는 경로·예외 처리 전략 |
 | [docs/04_API테스트_Postman.md](docs/04_API테스트_Postman.md) | **API 테스트 및 Postman 콜렉션** — 환경변수·테스트 스크립트·보안 침투 테스트 시나리오·Newman 자동화·CI/CD 통합 |
-| [docs/05_배포.md](docs/05_배포.md) | **배포 전략** — 1단계 로컬 개발(H2 + localhost) / 2단계 4주차 이후 선택 배포(Fly.io·Vercel·Supabase) |
+| [docs/05_배포.md](docs/05_배포.md) | **배포 조사 기록** — 무료 Java 호스트 비교(Render·Cloudtype·Cloud Run·Vercel), 중단 사유와 복구 방법 |
 | [다이어그램.canvas](다이어그램.canvas) | Obsidian Canvas — 문서 맵·시스템 아키텍처(MVC)·ERD·4주 로드맵을 한 화면에서 시각화 (Obsidian에서 열어 확인) |
 
 ## 현재 상태
@@ -118,9 +119,9 @@ npx newman run postman/Secure_Bulletin_Board.postman_collection.json -e postman/
 | 보안 강화(XSS/CSRF/BCrypt/SQLi 검증) | ✅ 완료 — 4가지 방어 모두 테스트로 증명 |
 | 테스트 | ✅ JUnit 36건 + Postman 39개 단언 전부 통과 |
 | OWASP ZAP 스캔 | ✅ **High 0 · Low 0** — 지적 3건 수정 후 재스캔 |
-| 배포 | ⬜ **로컬 개발 후 4주차 이후 (선택)** — [docs/05_배포.md](docs/05_배포.md) |
+| 배포 | ⬜ **하지 않음** — 무료 Java 호스트가 카드 등록을 요구해 중단. 근거와 재개 방법은 [docs/05_배포.md](docs/05_배포.md) |
 
-**현재 전략**: 4주 동안 **로컬(localhost)에서만** Spring Boot + React 개발·완성. 배포는 나중에(비용 $0 유지).
+**현재 전략**: **로컬 실행 기준으로 완성.** `./gradlew bootRun` 하나로 화면까지 동작합니다. 배포는 하지 않으며, 배포용 설정은 만들었다가 되돌렸습니다(커밋 `b0a2025` 에 보존).
 
 **검증 결과** — `./gradlew test` **36건 전부 통과** + 실행 중인 서버에서 직접 확인:
 - 비밀번호가 평문이 아닌 BCrypt 해시(`$2a$10$…`, 60자)로 저장되고, 같은 비밀번호도 사용자마다 다른 해시(salt)가 된다
