@@ -3,15 +3,18 @@ spring:
     name: secure-bulletin-board
 
   # H2 Database (로컬 개발)
+  #
+  # driver-class-name 과 database-platform 을 일부러 지정하지 않는다.
+  # 여기에 H2 를 고정하면 prod 프로파일에도 그대로 남아,
+  # PostgreSQL/MySQL URL 에 H2 드라이버를 물리려다 기동이 실패한다. (실제로 겪었다)
+  # Spring Boot 는 JDBC URL 로 드라이버를, 커넥션 메타데이터로 방언을 알아낸다.
   datasource:
     url: jdbc:h2:mem:testdb
-    driver-class-name: org.h2.Driver
     username: sa
     password:
 
   # JPA / Hibernate
   jpa:
-    database-platform: org.hibernate.dialect.H2Dialect
     hibernate:
       ddl-auto: create-drop  # 개발 중: 자동 스키마 생성 및 초기화
     show-sql: false
