@@ -1,65 +1,502 @@
 {
-	"nodes":[
-		{"id":"grp-arch","type":"group","x":1400,"y":-80,"width":1360,"height":800,"color":"6","label":"🏗️ 시스템 아키텍처 (MVC)"},
-		{"id":"grp-docs","type":"group","x":-40,"y":-80,"width":1300,"height":800,"color":"5","label":"📚 문서 맵"},
-		{"id":"grp-road","type":"group","x":1400,"y":950,"width":2360,"height":430,"color":"3","label":"🗓️ 4주 로드맵"},
-		{"id":"grp-newdocs","type":"group","x":-40,"y":1470,"width":1400,"height":450,"color":"2","label":"🎨 UI/UX · 백엔드 · API 테스트"},
-		{"id":"grp-erd","type":"group","x":-40,"y":900,"width":940,"height":500,"color":"4","label":"🗂️ ERD (1:N)"},
-		{"id":"doc-claude","type":"file","file":"CLAUDE.md","x":0,"y":-40,"width":300,"height":140},
-		{"id":"doc-plan","type":"file","file":"docs/01_기획.md","x":430,"y":-40,"width":300,"height":110},
-		{"id":"doc-deploy","type":"file","file":"docs/05_배포.md","x":860,"y":-40,"width":300,"height":110},
-		{"id":"doc-readme","type":"file","file":"README.md","x":430,"y":240,"width":300,"height":110},
-		{"id":"doc-verify","type":"file","file":"검증안내서.md","x":860,"y":240,"width":300,"height":110},
-		{"id":"arch-controller","type":"text","text":"**Controller**\n요청/응답 매핑\n입력값 검증 (Bean Validation)","x":1440,"y":350,"width":280,"height":120},
-		{"id":"doc-portfolio","type":"file","file":"포트폴리오_추가용_소개글.md","x":860,"y":520,"width":300,"height":110},
-		{"id":"doc-checklist","type":"file","file":"작업내역_체크리스트.md","x":0,"y":195,"width":300,"height":200},
-		{"id":"doc-uiux","type":"file","file":"docs/02_UI_UX설계.md","x":0,"y":1540,"width":400,"height":340},
-		{"id":"arch-view","type":"text","text":"**Thymeleaf View**\nth:text 자동 이스케이프\n(XSS 방어)","x":1440,"y":560,"width":280,"height":100},
-		{"id":"doc-ai3","type":"file","file":"AI_3줄.md","x":0,"y":520,"width":300,"height":200},
-		{"id":"doc-trouble","type":"file","file":"트러블슈팅.md","x":430,"y":520,"width":300,"height":110},
-		{"id":"arch-secchain","type":"text","text":"🔐 **Spring Security Filter Chain**\nCSRF 검증 → 인증(Authentication) → 인가(Authorization)\n\n통과한 요청만 다음 단계로 전달","x":1750,"y":140,"width":520,"height":110,"color":"1"},
-		{"id":"arch-service","type":"text","text":"**Service**\n비즈니스 로직\n작성자 본인 확인 (이중 방어)","x":1810,"y":350,"width":280,"height":120},
-		{"id":"arch-db","type":"text","text":"**DB**\nH2 인메모리 (로컬 개발)\n배포 시 Supabase(PostgreSQL)","x":2180,"y":560,"width":280,"height":100},
-		{"id":"erd-users","type":"text","text":"### users\n\n| 컬럼 | 타입 | 제약 |\n|---|---|---|\n| id | BIGINT | PK |\n| username | VARCHAR(50) | UNIQUE, NOT NULL |\n| password | VARCHAR(100) | NOT NULL (BCrypt 해시) |\n| email | VARCHAR(100) | UNIQUE, NOT NULL |\n| created_at | TIMESTAMP | NOT NULL |\n| updated_at | TIMESTAMP | NOT NULL |","x":20,"y":980,"width":400,"height":360},
-		{"id":"doc-backend","type":"file","file":"docs/03_백엔드구조.md","x":460,"y":1540,"width":400,"height":340},
-		{"id":"doc-postman","type":"file","file":"docs/04_API테스트_Postman.md","x":920,"y":1540,"width":400,"height":340},
-		{"id":"arch-browser","type":"text","text":"🌐 **Browser**\nHTTP 요청 (폼 제출 · CSRF 토큰 포함)","x":1850,"y":-40,"width":320,"height":90},
-		{"id":"arch-repo","type":"text","text":"**Repository**\nSpring Data JPA\n파라미터 바인딩만 사용","x":2180,"y":350,"width":280,"height":120},
-		{"id":"erd-posts","type":"text","text":"### posts\n\n| 컬럼 | 타입 | 제약 |\n|---|---|---|\n| id | BIGINT | PK |\n| user_id | BIGINT | FK → users.id |\n| title | VARCHAR(200) | NOT NULL |\n| content | TEXT | NOT NULL |\n| created_at | TIMESTAMP | NOT NULL |\n| updated_at | TIMESTAMP | NOT NULL |","x":480,"y":980,"width":400,"height":360},
-		{"id":"road-w0","type":"text","text":"**0주차 — 기획** ✅ 완료\n- 원본 지시서 검토\n- 프로젝트 폴더·문서 세트 생성\n- docs/01_기획.md 작성 (12섹션)","x":1440,"y":1030,"width":420,"height":260,"color":"4"},
-		{"id":"road-w1","type":"text","text":"**1주차 — 기반 + 인증** ✅ 완료\n- Gradle 9.5.1 / Spring Boot 3.5.6\n- H2(인메모리) 연동\n- users 테이블 설계\n- 회원가입/로그인 + 세션 인증\n- React(Vite) 초기화, /api 프록시\n- 테스트 10건 전부 통과","x":1900,"y":1030,"width":420,"height":260,"color":"4"},
-		{"id":"road-w2","type":"text","text":"**2주차 — 게시글 CRUD** ✅ 완료\n- posts 테이블 설계 (1:N, 단방향)\n- 목록(페이징)/상세/작성/수정/삭제\n- Bean Validation\n- 작성자 본인 검증 → 타인 글 403\n- XSS 이스케이프 확인\n- 테스트 누적 31건 통과","x":2360,"y":1030,"width":420,"height":260,"color":"4"},
-		{"id":"road-w3","type":"text","text":"**3주차 — Security 통합** ✅ 완료\n- SecurityConfig 적용\n- @PreAuthorize + Service 소유자 검증\n  (인가 3중 방어)\n- 로그아웃 · 세션 고정 방지 검증 완료","x":2820,"y":1030,"width":420,"height":260,"color":"4"},
-		{"id":"road-w4","type":"text","text":"**4주차 — 보안 강화 + 마무리**\n✅ BCrypt/XSS/CSRF/SQLi 확인\n✅ JUnit 36건 · Postman 39단언 통과\n✅ OWASP ZAP: High 0 · Low 0\n✅ CSP · SameSite · HttpOnly 적용\n⬜ 배포 (선택)","x":3280,"y":1030,"width":420,"height":260,"color":"4"}
+	"nodes": [
+		{
+			"id": "grp-arch",
+			"type": "group",
+			"x": 1400,
+			"y": -80,
+			"width": 1360,
+			"height": 800,
+			"color": "6",
+			"label": "🏗️ 시스템 아키텍처 (MVC)"
+		},
+		{
+			"id": "grp-docs",
+			"type": "group",
+			"x": -40,
+			"y": -80,
+			"width": 1300,
+			"height": 800,
+			"color": "5",
+			"label": "📚 문서 맵"
+		},
+		{
+			"id": "grp-road",
+			"type": "group",
+			"x": 1400,
+			"y": 950,
+			"width": 2360,
+			"height": 430,
+			"color": "3",
+			"label": "🗓️ 4주 로드맵"
+		},
+		{
+			"id": "grp-newdocs",
+			"type": "group",
+			"x": -40,
+			"y": 1470,
+			"width": 1400,
+			"height": 450,
+			"color": "2",
+			"label": "🎨 UI/UX · 백엔드 · API 테스트"
+		},
+		{
+			"id": "grp-erd",
+			"type": "group",
+			"x": -40,
+			"y": 900,
+			"width": 940,
+			"height": 500,
+			"color": "4",
+			"label": "🗂️ ERD (1:N)"
+		},
+		{
+			"id": "doc-claude",
+			"type": "file",
+			"file": "CLAUDE.md",
+			"x": 0,
+			"y": -40,
+			"width": 300,
+			"height": 140
+		},
+		{
+			"id": "doc-plan",
+			"type": "file",
+			"file": "docs/01_기획.md",
+			"x": 430,
+			"y": -40,
+			"width": 300,
+			"height": 110
+		},
+		{
+			"id": "doc-deploy",
+			"type": "file",
+			"file": "docs/05_배포.md",
+			"x": 860,
+			"y": -40,
+			"width": 300,
+			"height": 110
+		},
+		{
+			"id": "doc-readme",
+			"type": "file",
+			"file": "README.md",
+			"x": 430,
+			"y": 240,
+			"width": 300,
+			"height": 110
+		},
+		{
+			"id": "doc-verify",
+			"type": "file",
+			"file": "검증안내서.md",
+			"x": 860,
+			"y": 240,
+			"width": 300,
+			"height": 110
+		},
+		{
+			"id": "arch-controller",
+			"type": "text",
+			"text": "**Controller**\n요청/응답 매핑\n입력값 검증 (Bean Validation)",
+			"x": 1440,
+			"y": 350,
+			"width": 280,
+			"height": 120
+		},
+		{
+			"id": "doc-portfolio",
+			"type": "file",
+			"file": "포트폴리오_추가용_소개글.md",
+			"x": 860,
+			"y": 520,
+			"width": 300,
+			"height": 110
+		},
+		{
+			"id": "doc-checklist",
+			"type": "file",
+			"file": "작업내역_체크리스트.md",
+			"x": 0,
+			"y": 195,
+			"width": 300,
+			"height": 200
+		},
+		{
+			"id": "doc-uiux",
+			"type": "file",
+			"file": "docs/02_UI_UX설계.md",
+			"x": 0,
+			"y": 1540,
+			"width": 400,
+			"height": 340
+		},
+		{
+			"id": "arch-view",
+			"type": "text",
+			"text": "**Thymeleaf View**\nth:text 자동 이스케이프\n(XSS 방어)",
+			"x": 1440,
+			"y": 560,
+			"width": 280,
+			"height": 100
+		},
+		{
+			"id": "doc-ai3",
+			"type": "file",
+			"file": "AI_3줄.md",
+			"x": 0,
+			"y": 520,
+			"width": 300,
+			"height": 200
+		},
+		{
+			"id": "doc-trouble",
+			"type": "file",
+			"file": "트러블슈팅.md",
+			"x": 430,
+			"y": 520,
+			"width": 300,
+			"height": 110
+		},
+		{
+			"id": "arch-secchain",
+			"type": "text",
+			"text": "🔐 **Spring Security Filter Chain**\nCSRF 검증 → 인증(Authentication) → 인가(Authorization)\n\n통과한 요청만 다음 단계로 전달",
+			"x": 1750,
+			"y": 140,
+			"width": 520,
+			"height": 110,
+			"color": "1"
+		},
+		{
+			"id": "arch-service",
+			"type": "text",
+			"text": "**Service**\n비즈니스 로직\n작성자 본인 확인 (이중 방어)",
+			"x": 1810,
+			"y": 350,
+			"width": 280,
+			"height": 120
+		},
+		{
+			"id": "arch-db",
+			"type": "text",
+			"text": "**DB**\nH2 인메모리 (로컬 전용)\n재시작하면 데이터 초기화",
+			"x": 2180,
+			"y": 560,
+			"width": 280,
+			"height": 100
+		},
+		{
+			"id": "erd-users",
+			"type": "text",
+			"text": "### users\n\n| 컬럼 | 타입 | 제약 |\n|---|---|---|\n| id | BIGINT | PK |\n| username | VARCHAR(50) | UNIQUE, NOT NULL |\n| password | VARCHAR(100) | NOT NULL (BCrypt 해시) |\n| email | VARCHAR(100) | UNIQUE, NOT NULL |\n| created_at | TIMESTAMP | NOT NULL |\n| updated_at | TIMESTAMP | NOT NULL |",
+			"x": 20,
+			"y": 980,
+			"width": 400,
+			"height": 360
+		},
+		{
+			"id": "doc-backend",
+			"type": "file",
+			"file": "docs/03_백엔드구조.md",
+			"x": 460,
+			"y": 1540,
+			"width": 400,
+			"height": 340
+		},
+		{
+			"id": "doc-postman",
+			"type": "file",
+			"file": "docs/04_API테스트_Postman.md",
+			"x": 920,
+			"y": 1540,
+			"width": 400,
+			"height": 340
+		},
+		{
+			"id": "arch-browser",
+			"type": "text",
+			"text": "🌐 **Browser**\nHTTP 요청 (폼 제출 · CSRF 토큰 포함)",
+			"x": 1850,
+			"y": -40,
+			"width": 320,
+			"height": 90
+		},
+		{
+			"id": "arch-repo",
+			"type": "text",
+			"text": "**Repository**\nSpring Data JPA\n파라미터 바인딩만 사용",
+			"x": 2180,
+			"y": 350,
+			"width": 280,
+			"height": 120
+		},
+		{
+			"id": "erd-posts",
+			"type": "text",
+			"text": "### posts\n\n| 컬럼 | 타입 | 제약 |\n|---|---|---|\n| id | BIGINT | PK |\n| user_id | BIGINT | FK → users.id |\n| title | VARCHAR(200) | NOT NULL |\n| content | TEXT | NOT NULL |\n| created_at | TIMESTAMP | NOT NULL |\n| updated_at | TIMESTAMP | NOT NULL |",
+			"x": 480,
+			"y": 980,
+			"width": 400,
+			"height": 360
+		},
+		{
+			"id": "road-w0",
+			"type": "text",
+			"text": "**0주차 — 기획** ✅ 완료\n- 원본 지시서 검토\n- 프로젝트 폴더·문서 세트 생성\n- docs/01_기획.md 작성 (12섹션)",
+			"x": 1440,
+			"y": 1030,
+			"width": 420,
+			"height": 260,
+			"color": "4"
+		},
+		{
+			"id": "road-w1",
+			"type": "text",
+			"text": "**1주차 — 기반 + 인증** ✅ 완료\n- Gradle 9.5.1 / Spring Boot 3.5.6\n- H2(인메모리) 연동\n- users 테이블 설계\n- 회원가입/로그인 + 세션 인증\n- ~~React(Vite) 초기화~~ → 이후 제거\n  (Thymeleaf 단일 스택으로 확정)\n- 테스트 10건 전부 통과",
+			"x": 1900,
+			"y": 1030,
+			"width": 420,
+			"height": 260,
+			"color": "4"
+		},
+		{
+			"id": "road-w2",
+			"type": "text",
+			"text": "**2주차 — 게시글 CRUD** ✅ 완료\n- posts 테이블 설계 (1:N, 단방향)\n- 목록(페이징)/상세/작성/수정/삭제\n- Bean Validation\n- 작성자 본인 검증 → 타인 글 403\n- XSS 이스케이프 확인\n- 테스트 누적 31건 통과",
+			"x": 2360,
+			"y": 1030,
+			"width": 420,
+			"height": 260,
+			"color": "4"
+		},
+		{
+			"id": "road-w3",
+			"type": "text",
+			"text": "**3주차 — Security 통합** ✅ 완료\n- SecurityConfig 적용\n- @PreAuthorize + Service 소유자 검증\n  (인가 3중 방어)\n- 로그아웃 · 세션 고정 방지 검증 완료",
+			"x": 2820,
+			"y": 1030,
+			"width": 420,
+			"height": 260,
+			"color": "4"
+		},
+		{
+			"id": "road-w4",
+			"type": "text",
+			"text": "**4주차 — 보안 강화 + 마무리**\n✅ BCrypt/XSS/CSRF/SQLi 확인\n✅ JUnit 36건 · Postman 39단언 통과\n✅ OWASP ZAP: High 0 · Low 0\n✅ CSP · SameSite · HttpOnly 적용\n⬜ 배포 — 하지 않음\n  (무료 Java 호스트가 카드 요구)",
+			"x": 3280,
+			"y": 1030,
+			"width": 420,
+			"height": 260,
+			"color": "4"
+		}
 	],
-	"edges":[
-		{"id":"e-doc1","fromNode":"doc-readme","fromSide":"top","toNode":"doc-claude","toSide":"bottom"},
-		{"id":"e-doc2","fromNode":"doc-readme","fromSide":"top","toNode":"doc-plan","toSide":"bottom"},
-		{"id":"e-doc3","fromNode":"doc-readme","fromSide":"top","toNode":"doc-deploy","toSide":"bottom"},
-		{"id":"e-doc4","fromNode":"doc-readme","fromSide":"left","toNode":"doc-checklist","toSide":"right"},
-		{"id":"e-doc5","fromNode":"doc-readme","fromSide":"right","toNode":"doc-verify","toSide":"left"},
-		{"id":"e-doc6","fromNode":"doc-readme","fromSide":"bottom","toNode":"doc-ai3","toSide":"top"},
-		{"id":"e-doc7","fromNode":"doc-readme","fromSide":"bottom","toNode":"doc-trouble","toSide":"top"},
-		{"id":"e-doc8","fromNode":"doc-readme","fromSide":"bottom","toNode":"doc-portfolio","toSide":"top"},
-		{"id":"e-cross1","fromNode":"doc-plan","fromSide":"right","toNode":"grp-arch","toSide":"left","label":"§4 아키텍처"},
-		{"id":"e-cross2","fromNode":"doc-plan","fromSide":"bottom","toNode":"grp-erd","toSide":"top","label":"§5 ERD"},
-		{"id":"e-cross3","fromNode":"doc-checklist","fromSide":"bottom","toNode":"grp-road","toSide":"left","label":"§8 개발일정 · 체크리스트"},
-		{"id":"e-doc9","fromNode":"doc-readme","fromSide":"bottom","toNode":"doc-uiux","toSide":"top"},
-		{"id":"e-doc10","fromNode":"doc-readme","fromSide":"bottom","toNode":"doc-backend","toSide":"top"},
-		{"id":"e-cross5","fromNode":"doc-backend","fromSide":"right","toNode":"grp-arch","toSide":"left","label":"패키지 구조"},
-		{"id":"e-cross6","fromNode":"doc-uiux","fromSide":"right","toNode":"arch-view","toSide":"bottom","label":"화면 설계"},
-		{"id":"e-arch1","fromNode":"arch-browser","fromSide":"bottom","toNode":"arch-secchain","toSide":"top","label":"요청"},
-		{"id":"e-arch2","fromNode":"arch-secchain","fromSide":"bottom","toNode":"arch-controller","toSide":"top","label":"인증/인가 통과분만"},
-		{"id":"e-arch3","fromNode":"arch-controller","fromSide":"right","toNode":"arch-service","toSide":"left"},
-		{"id":"e-arch4","fromNode":"arch-service","fromSide":"right","toNode":"arch-repo","toSide":"left"},
-		{"id":"e-arch5","fromNode":"arch-repo","fromSide":"bottom","toNode":"arch-db","toSide":"top"},
-		{"id":"e-arch6","fromNode":"arch-controller","fromSide":"bottom","toNode":"arch-view","toSide":"top","label":"렌더링"},
-		{"id":"e-erd1","fromNode":"erd-users","fromSide":"right","toNode":"erd-posts","toSide":"left","label":"1 : N (user_id FK)"},
-		{"id":"e-road1","fromNode":"road-w0","fromSide":"right","toNode":"road-w1","toSide":"left"},
-		{"id":"e-road2","fromNode":"road-w1","fromSide":"right","toNode":"road-w2","toSide":"left"},
-		{"id":"e-road3","fromNode":"road-w2","fromSide":"right","toNode":"road-w3","toSide":"left"},
-		{"id":"e-road4","fromNode":"road-w3","fromSide":"right","toNode":"road-w4","toSide":"left"},
-		{"id":"e-doc11","fromNode":"doc-readme","fromSide":"bottom","toNode":"doc-postman","toSide":"top"},
-		{"id":"e-cross7","fromNode":"doc-postman","fromSide":"top","toNode":"grp-arch","toSide":"bottom","label":"§9 테스트·침투 시나리오"}
+	"edges": [
+		{
+			"id": "e-doc1",
+			"fromNode": "doc-readme",
+			"fromSide": "top",
+			"toNode": "doc-claude",
+			"toSide": "bottom"
+		},
+		{
+			"id": "e-doc2",
+			"fromNode": "doc-readme",
+			"fromSide": "top",
+			"toNode": "doc-plan",
+			"toSide": "bottom"
+		},
+		{
+			"id": "e-doc3",
+			"fromNode": "doc-readme",
+			"fromSide": "top",
+			"toNode": "doc-deploy",
+			"toSide": "bottom"
+		},
+		{
+			"id": "e-doc4",
+			"fromNode": "doc-readme",
+			"fromSide": "left",
+			"toNode": "doc-checklist",
+			"toSide": "right"
+		},
+		{
+			"id": "e-doc5",
+			"fromNode": "doc-readme",
+			"fromSide": "right",
+			"toNode": "doc-verify",
+			"toSide": "left"
+		},
+		{
+			"id": "e-doc6",
+			"fromNode": "doc-readme",
+			"fromSide": "bottom",
+			"toNode": "doc-ai3",
+			"toSide": "top"
+		},
+		{
+			"id": "e-doc7",
+			"fromNode": "doc-readme",
+			"fromSide": "bottom",
+			"toNode": "doc-trouble",
+			"toSide": "top"
+		},
+		{
+			"id": "e-doc8",
+			"fromNode": "doc-readme",
+			"fromSide": "bottom",
+			"toNode": "doc-portfolio",
+			"toSide": "top"
+		},
+		{
+			"id": "e-cross1",
+			"fromNode": "doc-plan",
+			"fromSide": "right",
+			"toNode": "grp-arch",
+			"toSide": "left",
+			"label": "§4 아키텍처"
+		},
+		{
+			"id": "e-cross2",
+			"fromNode": "doc-plan",
+			"fromSide": "bottom",
+			"toNode": "grp-erd",
+			"toSide": "top",
+			"label": "§5 ERD"
+		},
+		{
+			"id": "e-cross3",
+			"fromNode": "doc-checklist",
+			"fromSide": "bottom",
+			"toNode": "grp-road",
+			"toSide": "left",
+			"label": "§8 개발일정 · 체크리스트"
+		},
+		{
+			"id": "e-doc9",
+			"fromNode": "doc-readme",
+			"fromSide": "bottom",
+			"toNode": "doc-uiux",
+			"toSide": "top"
+		},
+		{
+			"id": "e-doc10",
+			"fromNode": "doc-readme",
+			"fromSide": "bottom",
+			"toNode": "doc-backend",
+			"toSide": "top"
+		},
+		{
+			"id": "e-cross5",
+			"fromNode": "doc-backend",
+			"fromSide": "right",
+			"toNode": "grp-arch",
+			"toSide": "left",
+			"label": "패키지 구조"
+		},
+		{
+			"id": "e-cross6",
+			"fromNode": "doc-uiux",
+			"fromSide": "right",
+			"toNode": "arch-view",
+			"toSide": "bottom",
+			"label": "화면 설계"
+		},
+		{
+			"id": "e-arch1",
+			"fromNode": "arch-browser",
+			"fromSide": "bottom",
+			"toNode": "arch-secchain",
+			"toSide": "top",
+			"label": "요청"
+		},
+		{
+			"id": "e-arch2",
+			"fromNode": "arch-secchain",
+			"fromSide": "bottom",
+			"toNode": "arch-controller",
+			"toSide": "top",
+			"label": "인증/인가 통과분만"
+		},
+		{
+			"id": "e-arch3",
+			"fromNode": "arch-controller",
+			"fromSide": "right",
+			"toNode": "arch-service",
+			"toSide": "left"
+		},
+		{
+			"id": "e-arch4",
+			"fromNode": "arch-service",
+			"fromSide": "right",
+			"toNode": "arch-repo",
+			"toSide": "left"
+		},
+		{
+			"id": "e-arch5",
+			"fromNode": "arch-repo",
+			"fromSide": "bottom",
+			"toNode": "arch-db",
+			"toSide": "top"
+		},
+		{
+			"id": "e-arch6",
+			"fromNode": "arch-controller",
+			"fromSide": "bottom",
+			"toNode": "arch-view",
+			"toSide": "top",
+			"label": "렌더링"
+		},
+		{
+			"id": "e-erd1",
+			"fromNode": "erd-users",
+			"fromSide": "right",
+			"toNode": "erd-posts",
+			"toSide": "left",
+			"label": "1 : N (user_id FK)"
+		},
+		{
+			"id": "e-road1",
+			"fromNode": "road-w0",
+			"fromSide": "right",
+			"toNode": "road-w1",
+			"toSide": "left"
+		},
+		{
+			"id": "e-road2",
+			"fromNode": "road-w1",
+			"fromSide": "right",
+			"toNode": "road-w2",
+			"toSide": "left"
+		},
+		{
+			"id": "e-road3",
+			"fromNode": "road-w2",
+			"fromSide": "right",
+			"toNode": "road-w3",
+			"toSide": "left"
+		},
+		{
+			"id": "e-road4",
+			"fromNode": "road-w3",
+			"fromSide": "right",
+			"toNode": "road-w4",
+			"toSide": "left"
+		},
+		{
+			"id": "e-doc11",
+			"fromNode": "doc-readme",
+			"fromSide": "bottom",
+			"toNode": "doc-postman",
+			"toSide": "top"
+		},
+		{
+			"id": "e-cross7",
+			"fromNode": "doc-postman",
+			"fromSide": "top",
+			"toNode": "grp-arch",
+			"toSide": "bottom",
+			"label": "§9 테스트·침투 시나리오"
+		}
 	]
 }
