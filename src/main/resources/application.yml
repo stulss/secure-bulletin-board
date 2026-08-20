@@ -2,12 +2,11 @@ spring:
   application:
     name: secure-bulletin-board
 
-  # H2 Database (로컬 개발)
+  # H2 Database (인메모리 — 재시작하면 데이터가 사라진다)
   #
   # driver-class-name 과 database-platform 을 일부러 지정하지 않는다.
-  # 여기에 H2 를 고정하면 prod 프로파일에도 그대로 남아,
-  # PostgreSQL/MySQL URL 에 H2 드라이버를 물리려다 기동이 실패한다. (실제로 겪었다)
-  # Spring Boot 는 JDBC URL 로 드라이버를, 커넥션 메타데이터로 방언을 알아낸다.
+  # Spring Boot 가 JDBC URL 로 드라이버를, 커넥션 메타데이터로 방언을 알아내므로
+  # 굳이 고정할 필요가 없고, 고정해두면 다른 DB 로 바꿀 때 그 값이 발목을 잡는다.
   datasource:
     url: jdbc:h2:mem:testdb
     username: sa
@@ -35,8 +34,8 @@ spring:
     check-template-location: true
 
 server:
-  # 로컬에서는 8080. 배포 환경(Cloud Run 등)이 PORT 환경변수를 주입하면 그 포트로 뜬다.
-  # PORT는 플랫폼이 정하는 값이므로 직접 설정하지 않는다. (docs/05_배포.md 참고)
+  # 기본 8080. PORT 환경변수가 있으면 그 값을 쓴다.
+  # 로컬에서 포트가 겹칠 때 PORT=9090 처럼 바꿔 띄울 수 있다.
   port: ${PORT:8080}
 
   servlet:
