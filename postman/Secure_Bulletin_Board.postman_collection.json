@@ -5,14 +5,38 @@
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"variable": [
-		{ "key": "baseUrl", "value": "http://localhost:8080/api" },
-		{ "key": "runId", "value": "" },
-		{ "key": "aliceUser", "value": "" },
-		{ "key": "bobUser", "value": "" },
-		{ "key": "csrfToken", "value": "" },
-		{ "key": "postId", "value": "" },
-		{ "key": "xssPostId", "value": "" },
-		{ "key": "aliceTitle", "value": "앨리스의 글" }
+		{
+			"key": "baseUrl",
+			"value": "http://localhost:8080"
+		},
+		{
+			"key": "runId",
+			"value": ""
+		},
+		{
+			"key": "aliceUser",
+			"value": ""
+		},
+		{
+			"key": "bobUser",
+			"value": ""
+		},
+		{
+			"key": "csrfToken",
+			"value": ""
+		},
+		{
+			"key": "postId",
+			"value": ""
+		},
+		{
+			"key": "xssPostId",
+			"value": ""
+		},
+		{
+			"key": "aliceTitle",
+			"value": "앨리스의 글"
+		}
 	],
 	"event": [
 		{
@@ -67,7 +91,15 @@
 					"request": {
 						"method": "GET",
 						"header": [],
-						"url": { "raw": "{{baseUrl}}/posts", "host": ["{{baseUrl}}"], "path": ["posts"] },
+						"url": {
+							"raw": "{{baseUrl}}/posts",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"posts"
+							]
+						},
 						"description": "게시글 목록은 비로그인도 열람 가능하므로 서버 기동 확인용으로 쓴다."
 					},
 					"response": []
@@ -79,7 +111,9 @@
 			"item": [
 				{
 					"name": "1-1. 회원가입 — alice",
-					"protocolProfileBehavior": { "followRedirects": false },
+					"protocolProfileBehavior": {
+						"followRedirects": false
+					},
 					"event": [
 						{
 							"listen": "test",
@@ -103,20 +137,46 @@
 						"body": {
 							"mode": "urlencoded",
 							"urlencoded": [
-								{ "key": "username", "value": "{{aliceUser}}" },
-								{ "key": "email", "value": "{{aliceUser}}@example.com" },
-								{ "key": "password", "value": "password123" },
-								{ "key": "passwordConfirm", "value": "password123" },
-								{ "key": "_csrf", "value": "{{csrfToken}}" }
+								{
+									"key": "username",
+									"value": "{{aliceUser}}"
+								},
+								{
+									"key": "email",
+									"value": "{{aliceUser}}@example.com"
+								},
+								{
+									"key": "password",
+									"value": "password123"
+								},
+								{
+									"key": "passwordConfirm",
+									"value": "password123"
+								},
+								{
+									"key": "_csrf",
+									"value": "{{csrfToken}}"
+								}
 							]
 						},
-						"url": { "raw": "{{baseUrl}}/auth/signup", "host": ["{{baseUrl}}"], "path": ["auth", "signup"] }
+						"url": {
+							"raw": "{{baseUrl}}/auth/signup",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"auth",
+								"signup"
+							]
+						}
 					},
 					"response": []
 				},
 				{
 					"name": "1-2. 회원가입 — bob",
-					"protocolProfileBehavior": { "followRedirects": false },
+					"protocolProfileBehavior": {
+						"followRedirects": false
+					},
 					"event": [
 						{
 							"listen": "test",
@@ -136,20 +196,46 @@
 						"body": {
 							"mode": "urlencoded",
 							"urlencoded": [
-								{ "key": "username", "value": "{{bobUser}}" },
-								{ "key": "email", "value": "{{bobUser}}@example.com" },
-								{ "key": "password", "value": "password123" },
-								{ "key": "passwordConfirm", "value": "password123" },
-								{ "key": "_csrf", "value": "{{csrfToken}}" }
+								{
+									"key": "username",
+									"value": "{{bobUser}}"
+								},
+								{
+									"key": "email",
+									"value": "{{bobUser}}@example.com"
+								},
+								{
+									"key": "password",
+									"value": "password123"
+								},
+								{
+									"key": "passwordConfirm",
+									"value": "password123"
+								},
+								{
+									"key": "_csrf",
+									"value": "{{csrfToken}}"
+								}
 							]
 						},
-						"url": { "raw": "{{baseUrl}}/auth/signup", "host": ["{{baseUrl}}"], "path": ["auth", "signup"] }
+						"url": {
+							"raw": "{{baseUrl}}/auth/signup",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"auth",
+								"signup"
+							]
+						}
 					},
 					"response": []
 				},
 				{
 					"name": "1-3. 회원가입 실패 — 중복 사용자명",
-					"protocolProfileBehavior": { "followRedirects": false },
+					"protocolProfileBehavior": {
+						"followRedirects": false
+					},
 					"event": [
 						{
 							"listen": "test",
@@ -173,20 +259,46 @@
 						"body": {
 							"mode": "urlencoded",
 							"urlencoded": [
-								{ "key": "username", "value": "{{aliceUser}}" },
-								{ "key": "email", "value": "another-{{aliceUser}}@example.com" },
-								{ "key": "password", "value": "password123" },
-								{ "key": "passwordConfirm", "value": "password123" },
-								{ "key": "_csrf", "value": "{{csrfToken}}" }
+								{
+									"key": "username",
+									"value": "{{aliceUser}}"
+								},
+								{
+									"key": "email",
+									"value": "another-{{aliceUser}}@example.com"
+								},
+								{
+									"key": "password",
+									"value": "password123"
+								},
+								{
+									"key": "passwordConfirm",
+									"value": "password123"
+								},
+								{
+									"key": "_csrf",
+									"value": "{{csrfToken}}"
+								}
 							]
 						},
-						"url": { "raw": "{{baseUrl}}/auth/signup", "host": ["{{baseUrl}}"], "path": ["auth", "signup"] }
+						"url": {
+							"raw": "{{baseUrl}}/auth/signup",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"auth",
+								"signup"
+							]
+						}
 					},
 					"response": []
 				},
 				{
 					"name": "1-4. 로그인 실패 — 틀린 비밀번호",
-					"protocolProfileBehavior": { "followRedirects": false },
+					"protocolProfileBehavior": {
+						"followRedirects": false
+					},
 					"event": [
 						{
 							"listen": "test",
@@ -207,18 +319,38 @@
 						"body": {
 							"mode": "urlencoded",
 							"urlencoded": [
-								{ "key": "username", "value": "{{aliceUser}}" },
-								{ "key": "password", "value": "WRONG-PASSWORD" },
-								{ "key": "_csrf", "value": "{{csrfToken}}" }
+								{
+									"key": "username",
+									"value": "{{aliceUser}}"
+								},
+								{
+									"key": "password",
+									"value": "WRONG-PASSWORD"
+								},
+								{
+									"key": "_csrf",
+									"value": "{{csrfToken}}"
+								}
 							]
 						},
-						"url": { "raw": "{{baseUrl}}/auth/login", "host": ["{{baseUrl}}"], "path": ["auth", "login"] }
+						"url": {
+							"raw": "{{baseUrl}}/auth/login",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"auth",
+								"login"
+							]
+						}
 					},
 					"response": []
 				},
 				{
 					"name": "1-5. 로그인 — alice",
-					"protocolProfileBehavior": { "followRedirects": false },
+					"protocolProfileBehavior": {
+						"followRedirects": false
+					},
 					"event": [
 						{
 							"listen": "test",
@@ -243,12 +375,30 @@
 						"body": {
 							"mode": "urlencoded",
 							"urlencoded": [
-								{ "key": "username", "value": "{{aliceUser}}" },
-								{ "key": "password", "value": "password123" },
-								{ "key": "_csrf", "value": "{{csrfToken}}" }
+								{
+									"key": "username",
+									"value": "{{aliceUser}}"
+								},
+								{
+									"key": "password",
+									"value": "password123"
+								},
+								{
+									"key": "_csrf",
+									"value": "{{csrfToken}}"
+								}
 							]
 						},
-						"url": { "raw": "{{baseUrl}}/auth/login", "host": ["{{baseUrl}}"], "path": ["auth", "login"] }
+						"url": {
+							"raw": "{{baseUrl}}/auth/login",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"auth",
+								"login"
+							]
+						}
 					},
 					"response": []
 				},
@@ -274,7 +424,16 @@
 					"request": {
 						"method": "GET",
 						"header": [],
-						"url": { "raw": "{{baseUrl}}/auth/me", "host": ["{{baseUrl}}"], "path": ["auth", "me"] }
+						"url": {
+							"raw": "{{baseUrl}}/auth/me",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"auth",
+								"me"
+							]
+						}
 					},
 					"response": []
 				}
@@ -285,7 +444,9 @@
 			"item": [
 				{
 					"name": "2-1. 글 작성",
-					"protocolProfileBehavior": { "followRedirects": false },
+					"protocolProfileBehavior": {
+						"followRedirects": false
+					},
 					"event": [
 						{
 							"listen": "test",
@@ -312,12 +473,29 @@
 						"body": {
 							"mode": "urlencoded",
 							"urlencoded": [
-								{ "key": "title", "value": "{{aliceTitle}}" },
-								{ "key": "content", "value": "앨리스가 작성한 본문입니다." },
-								{ "key": "_csrf", "value": "{{csrfToken}}" }
+								{
+									"key": "title",
+									"value": "{{aliceTitle}}"
+								},
+								{
+									"key": "content",
+									"value": "앨리스가 작성한 본문입니다."
+								},
+								{
+									"key": "_csrf",
+									"value": "{{csrfToken}}"
+								}
 							]
 						},
-						"url": { "raw": "{{baseUrl}}/posts", "host": ["{{baseUrl}}"], "path": ["posts"] }
+						"url": {
+							"raw": "{{baseUrl}}/posts",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"posts"
+							]
+						}
 					},
 					"response": []
 				},
@@ -343,7 +521,16 @@
 					"request": {
 						"method": "GET",
 						"header": [],
-						"url": { "raw": "{{baseUrl}}/posts/{{postId}}", "host": ["{{baseUrl}}"], "path": ["posts", "{{postId}}"] }
+						"url": {
+							"raw": "{{baseUrl}}/posts/{{postId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"posts",
+								"{{postId}}"
+							]
+						}
 					},
 					"response": []
 				},
@@ -369,13 +556,23 @@
 					"request": {
 						"method": "GET",
 						"header": [],
-						"url": { "raw": "{{baseUrl}}/posts", "host": ["{{baseUrl}}"], "path": ["posts"] }
+						"url": {
+							"raw": "{{baseUrl}}/posts",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"posts"
+							]
+						}
 					},
 					"response": []
 				},
 				{
 					"name": "2-4. 글 작성 실패 — 제목 없음",
-					"protocolProfileBehavior": { "followRedirects": false },
+					"protocolProfileBehavior": {
+						"followRedirects": false
+					},
 					"event": [
 						{
 							"listen": "test",
@@ -399,18 +596,37 @@
 						"body": {
 							"mode": "urlencoded",
 							"urlencoded": [
-								{ "key": "title", "value": "" },
-								{ "key": "content", "value": "제목이 비어 있는 글" },
-								{ "key": "_csrf", "value": "{{csrfToken}}" }
+								{
+									"key": "title",
+									"value": ""
+								},
+								{
+									"key": "content",
+									"value": "제목이 비어 있는 글"
+								},
+								{
+									"key": "_csrf",
+									"value": "{{csrfToken}}"
+								}
 							]
 						},
-						"url": { "raw": "{{baseUrl}}/posts", "host": ["{{baseUrl}}"], "path": ["posts"] }
+						"url": {
+							"raw": "{{baseUrl}}/posts",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"posts"
+							]
+						}
 					},
 					"response": []
 				},
 				{
 					"name": "2-5. 본인 글 수정",
-					"protocolProfileBehavior": { "followRedirects": false },
+					"protocolProfileBehavior": {
+						"followRedirects": false
+					},
 					"event": [
 						{
 							"listen": "test",
@@ -431,12 +647,31 @@
 						"body": {
 							"mode": "urlencoded",
 							"urlencoded": [
-								{ "key": "title", "value": "{{aliceTitle}} (수정됨)" },
-								{ "key": "content", "value": "본인이 수정한 본문입니다." },
-								{ "key": "_csrf", "value": "{{csrfToken}}" }
+								{
+									"key": "title",
+									"value": "{{aliceTitle}} (수정됨)"
+								},
+								{
+									"key": "content",
+									"value": "본인이 수정한 본문입니다."
+								},
+								{
+									"key": "_csrf",
+									"value": "{{csrfToken}}"
+								}
 							]
 						},
-						"url": { "raw": "{{baseUrl}}/posts/{{postId}}/edit", "host": ["{{baseUrl}}"], "path": ["posts", "{{postId}}", "edit"] }
+						"url": {
+							"raw": "{{baseUrl}}/posts/{{postId}}/edit",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"posts",
+								"{{postId}}",
+								"edit"
+							]
+						}
 					},
 					"response": []
 				},
@@ -458,7 +693,16 @@
 					"request": {
 						"method": "GET",
 						"header": [],
-						"url": { "raw": "{{baseUrl}}/posts/{{postId}}", "host": ["{{baseUrl}}"], "path": ["posts", "{{postId}}"] }
+						"url": {
+							"raw": "{{baseUrl}}/posts/{{postId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"posts",
+								"{{postId}}"
+							]
+						}
 					},
 					"response": []
 				}
@@ -469,7 +713,9 @@
 			"item": [
 				{
 					"name": "3-1. CSRF — 토큰 없이 글 작성",
-					"protocolProfileBehavior": { "followRedirects": false },
+					"protocolProfileBehavior": {
+						"followRedirects": false
+					},
 					"event": [
 						{
 							"listen": "test",
@@ -490,17 +736,33 @@
 						"body": {
 							"mode": "urlencoded",
 							"urlencoded": [
-								{ "key": "title", "value": "CSRF 토큰 없는 요청" },
-								{ "key": "content", "value": "이 글은 저장되면 안 된다" }
+								{
+									"key": "title",
+									"value": "CSRF 토큰 없는 요청"
+								},
+								{
+									"key": "content",
+									"value": "이 글은 저장되면 안 된다"
+								}
 							]
 						},
-						"url": { "raw": "{{baseUrl}}/posts", "host": ["{{baseUrl}}"], "path": ["posts"] }
+						"url": {
+							"raw": "{{baseUrl}}/posts",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"posts"
+							]
+						}
 					},
 					"response": []
 				},
 				{
 					"name": "3-2. XSS — 스크립트 페이로드 저장",
-					"protocolProfileBehavior": { "followRedirects": false },
+					"protocolProfileBehavior": {
+						"followRedirects": false
+					},
 					"event": [
 						{
 							"listen": "test",
@@ -521,12 +783,29 @@
 						"body": {
 							"mode": "urlencoded",
 							"urlencoded": [
-								{ "key": "title", "value": "<img src=x onerror=alert(1)>" },
-								{ "key": "content", "value": "<script>alert('XSS')</script>" },
-								{ "key": "_csrf", "value": "{{csrfToken}}" }
+								{
+									"key": "title",
+									"value": "<img src=x onerror=alert(1)>"
+								},
+								{
+									"key": "content",
+									"value": "<script>alert('XSS')</script>"
+								},
+								{
+									"key": "_csrf",
+									"value": "{{csrfToken}}"
+								}
 							]
 						},
-						"url": { "raw": "{{baseUrl}}/posts", "host": ["{{baseUrl}}"], "path": ["posts"] }
+						"url": {
+							"raw": "{{baseUrl}}/posts",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"posts"
+							]
+						}
 					},
 					"response": []
 				},
@@ -558,13 +837,24 @@
 					"request": {
 						"method": "GET",
 						"header": [],
-						"url": { "raw": "{{baseUrl}}/posts/{{xssPostId}}", "host": ["{{baseUrl}}"], "path": ["posts", "{{xssPostId}}"] }
+						"url": {
+							"raw": "{{baseUrl}}/posts/{{xssPostId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"posts",
+								"{{xssPostId}}"
+							]
+						}
 					},
 					"response": []
 				},
 				{
 					"name": "3-4. SQL Injection — 로그인 우회 시도",
-					"protocolProfileBehavior": { "followRedirects": false },
+					"protocolProfileBehavior": {
+						"followRedirects": false
+					},
 					"event": [
 						{
 							"listen": "test",
@@ -589,18 +879,38 @@
 						"body": {
 							"mode": "urlencoded",
 							"urlencoded": [
-								{ "key": "username", "value": "' OR '1'='1" },
-								{ "key": "password", "value": "' OR '1'='1" },
-								{ "key": "_csrf", "value": "{{csrfToken}}" }
+								{
+									"key": "username",
+									"value": "' OR '1'='1"
+								},
+								{
+									"key": "password",
+									"value": "' OR '1'='1"
+								},
+								{
+									"key": "_csrf",
+									"value": "{{csrfToken}}"
+								}
 							]
 						},
-						"url": { "raw": "{{baseUrl}}/auth/login", "host": ["{{baseUrl}}"], "path": ["auth", "login"] }
+						"url": {
+							"raw": "{{baseUrl}}/auth/login",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"auth",
+								"login"
+							]
+						}
 					},
 					"response": []
 				},
 				{
 					"name": "3-5. 인가 — bob으로 로그인 (다른 사용자)",
-					"protocolProfileBehavior": { "followRedirects": false },
+					"protocolProfileBehavior": {
+						"followRedirects": false
+					},
 					"event": [
 						{
 							"listen": "test",
@@ -621,18 +931,38 @@
 						"body": {
 							"mode": "urlencoded",
 							"urlencoded": [
-								{ "key": "username", "value": "{{bobUser}}" },
-								{ "key": "password", "value": "password123" },
-								{ "key": "_csrf", "value": "{{csrfToken}}" }
+								{
+									"key": "username",
+									"value": "{{bobUser}}"
+								},
+								{
+									"key": "password",
+									"value": "password123"
+								},
+								{
+									"key": "_csrf",
+									"value": "{{csrfToken}}"
+								}
 							]
 						},
-						"url": { "raw": "{{baseUrl}}/auth/login", "host": ["{{baseUrl}}"], "path": ["auth", "login"] }
+						"url": {
+							"raw": "{{baseUrl}}/auth/login",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"auth",
+								"login"
+							]
+						}
 					},
 					"response": []
 				},
 				{
 					"name": "3-6. 인가 — 타인 글 수정 시도 (403 이어야 함)",
-					"protocolProfileBehavior": { "followRedirects": false },
+					"protocolProfileBehavior": {
+						"followRedirects": false
+					},
 					"event": [
 						{
 							"listen": "test",
@@ -652,19 +982,40 @@
 						"body": {
 							"mode": "urlencoded",
 							"urlencoded": [
-								{ "key": "title", "value": "탈취한 제목" },
-								{ "key": "content", "value": "탈취한 본문" },
-								{ "key": "_csrf", "value": "{{csrfToken}}" }
+								{
+									"key": "title",
+									"value": "탈취한 제목"
+								},
+								{
+									"key": "content",
+									"value": "탈취한 본문"
+								},
+								{
+									"key": "_csrf",
+									"value": "{{csrfToken}}"
+								}
 							]
 						},
-						"url": { "raw": "{{baseUrl}}/posts/{{postId}}/edit", "host": ["{{baseUrl}}"], "path": ["posts", "{{postId}}", "edit"] },
+						"url": {
+							"raw": "{{baseUrl}}/posts/{{postId}}/edit",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"posts",
+								"{{postId}}",
+								"edit"
+							]
+						},
 						"description": "bob이 alice의 글 ID를 URL에 직접 넣어 수정을 시도한다. 화면에 수정 버튼이 보이지 않더라도 이 경로는 열려 있으므로, 서버가 막아야 한다."
 					},
 					"response": []
 				},
 				{
 					"name": "3-7. 인가 — 타인 글 삭제 시도 (403 이어야 함)",
-					"protocolProfileBehavior": { "followRedirects": false },
+					"protocolProfileBehavior": {
+						"followRedirects": false
+					},
 					"event": [
 						{
 							"listen": "test",
@@ -684,10 +1035,23 @@
 						"body": {
 							"mode": "urlencoded",
 							"urlencoded": [
-								{ "key": "_csrf", "value": "{{csrfToken}}" }
+								{
+									"key": "_csrf",
+									"value": "{{csrfToken}}"
+								}
 							]
 						},
-						"url": { "raw": "{{baseUrl}}/posts/{{postId}}/delete", "host": ["{{baseUrl}}"], "path": ["posts", "{{postId}}", "delete"] }
+						"url": {
+							"raw": "{{baseUrl}}/posts/{{postId}}/delete",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"posts",
+								"{{postId}}",
+								"delete"
+							]
+						}
 					},
 					"response": []
 				},
@@ -720,7 +1084,16 @@
 					"request": {
 						"method": "GET",
 						"header": [],
-						"url": { "raw": "{{baseUrl}}/posts/{{postId}}", "host": ["{{baseUrl}}"], "path": ["posts", "{{postId}}"] },
+						"url": {
+							"raw": "{{baseUrl}}/posts/{{postId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"posts",
+								"{{postId}}"
+							]
+						},
 						"description": "403을 받았다는 사실만으로는 부족하다. 실제로 데이터가 그대로인지 확인한다."
 					},
 					"response": []
@@ -743,13 +1116,24 @@
 					"request": {
 						"method": "GET",
 						"header": [],
-						"url": { "raw": "{{baseUrl}}/posts/999999", "host": ["{{baseUrl}}"], "path": ["posts", "999999"] }
+						"url": {
+							"raw": "{{baseUrl}}/posts/999999",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"posts",
+								"999999"
+							]
+						}
 					},
 					"response": []
 				},
 				{
 					"name": "3-10. 세션 — 로그아웃",
-					"protocolProfileBehavior": { "followRedirects": false },
+					"protocolProfileBehavior": {
+						"followRedirects": false
+					},
 					"event": [
 						{
 							"listen": "test",
@@ -770,16 +1154,30 @@
 						"body": {
 							"mode": "urlencoded",
 							"urlencoded": [
-								{ "key": "_csrf", "value": "{{csrfToken}}" }
+								{
+									"key": "_csrf",
+									"value": "{{csrfToken}}"
+								}
 							]
 						},
-						"url": { "raw": "{{baseUrl}}/auth/logout", "host": ["{{baseUrl}}"], "path": ["auth", "logout"] }
+						"url": {
+							"raw": "{{baseUrl}}/auth/logout",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"auth",
+								"logout"
+							]
+						}
 					},
 					"response": []
 				},
 				{
 					"name": "3-11. 세션 — 로그아웃 후 보호된 페이지 접근",
-					"protocolProfileBehavior": { "followRedirects": false },
+					"protocolProfileBehavior": {
+						"followRedirects": false
+					},
 					"event": [
 						{
 							"listen": "test",
@@ -797,13 +1195,24 @@
 					"request": {
 						"method": "GET",
 						"header": [],
-						"url": { "raw": "{{baseUrl}}/posts/new", "host": ["{{baseUrl}}"], "path": ["posts", "new"] }
+						"url": {
+							"raw": "{{baseUrl}}/posts/new",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"posts",
+								"new"
+							]
+						}
 					},
 					"response": []
 				},
 				{
 					"name": "3-12. 세션 — 비로그인 상태로 글 작성 시도",
-					"protocolProfileBehavior": { "followRedirects": false },
+					"protocolProfileBehavior": {
+						"followRedirects": false
+					},
 					"event": [
 						{
 							"listen": "test",
@@ -828,12 +1237,29 @@
 						"body": {
 							"mode": "urlencoded",
 							"urlencoded": [
-								{ "key": "title", "value": "비로그인 작성 시도" },
-								{ "key": "content", "value": "저장되면 안 된다" },
-								{ "key": "_csrf", "value": "{{csrfToken}}" }
+								{
+									"key": "title",
+									"value": "비로그인 작성 시도"
+								},
+								{
+									"key": "content",
+									"value": "저장되면 안 된다"
+								},
+								{
+									"key": "_csrf",
+									"value": "{{csrfToken}}"
+								}
 							]
 						},
-						"url": { "raw": "{{baseUrl}}/posts", "host": ["{{baseUrl}}"], "path": ["posts"] }
+						"url": {
+							"raw": "{{baseUrl}}/posts",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"posts"
+							]
+						}
 					},
 					"response": []
 				}

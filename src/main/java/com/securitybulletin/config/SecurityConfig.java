@@ -26,8 +26,8 @@ public class SecurityConfig {
 	/**
 	 * Spring Security 필터 체인 설정
 	 *
-	 * 주의: application.yml의 server.servlet.context-path=/api 는 매칭 전에 제거되므로
-	 * 아래 경로에는 /api 접두사를 쓰지 않는다. (실제 URL은 /api/auth/login)
+	 * 아래 경로는 context-path 를 제외한 값이다. 지금은 context-path 가 없으므로
+	 * 실제 URL 과 그대로 일치한다. (예: /auth/login)
 	 */
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {

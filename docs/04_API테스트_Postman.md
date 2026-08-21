@@ -14,7 +14,7 @@
 | 파일 | 용도 |
 |---|---|
 | `postman/Secure_Bulletin_Board.postman_collection.json` | 콜렉션 본체 (요청 25개, 단언 39개) |
-| `postman/Local.postman_environment.json` | 로컬 환경 — `baseUrl = http://localhost:8080/api` |
+| `postman/Local.postman_environment.json` | 로컬 환경 — `baseUrl = http://localhost:8080` (context-path 없음, 2026-08-21부터) |
 | `postman/Production.postman_environment.json` | 배포 환경 — 배포 시 호스트만 교체 |
 
 ### Postman 클라우드
@@ -34,6 +34,10 @@
 > 클라우드 대신 **로컬 파일을 Import** 하면 된다.
 >
 > 두 버전은 자동으로 동기화되지 않는다. 콜렉션을 고쳤다면 양쪽 모두 반영할 것.
+>
+> **2026-08-21**: context-path 제거로 baseUrl에서 `/api`를 뗐다. 로컬 파일 3개와 클라우드 **환경(Local/Production) 2개**는 갱신했다.
+> 클라우드 **콜렉션 자체**에 남아있는 `baseUrl` 변수(`http://localhost:8080/api`)는 그대로 두었다 — Postman은 환경 변수가
+> 콜렉션 변수보다 우선 적용되므로, 실행 시 Local이나 Production 환경을 선택하기만 하면 올바른 값(`/api` 없음)으로 덮어써진다.
 
 ---
 
@@ -156,7 +160,7 @@ npx newman run "postman/Secure_Bulletin_Board.postman_collection.json" -e "postm
 
 `postman/results/`는 `.gitignore`에 등록되어 있다.
 
-### 4-3. 실행 결과 (2026-08-20)
+### 4-3. 실행 결과 (2026-08-21, context-path 제거 후 재확인)
 
 ```
                          executed    failed
@@ -219,7 +223,7 @@ jobs:
       - name: 백엔드 기동
         run: ./gradlew bootRun &
       - name: 기동 대기
-        run: npx wait-on http://localhost:8080/api/posts --timeout 120000
+        run: npx wait-on http://localhost:8080/posts --timeout 120000
       - name: 콜렉션 실행
         run: npx newman run postman/Secure_Bulletin_Board.postman_collection.json -e postman/Local.postman_environment.json
 ```

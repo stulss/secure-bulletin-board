@@ -4,7 +4,7 @@
 XSS/SQL Injection 방어를 적용한 보안 강화 웹 서비스입니다.
 
 > 국비지원 교육 과정 수료 후 취업 포트폴리오 + Spring Security 인증/인가 실습을 목적으로 기획했습니다.
-> **현재 상태: 4주차 범위까지 완료 — 로컬 실행 기준으로 완성. JUnit 36건 · Postman 39개 단언 · OWASP ZAP High 0 통과.**
+> **현재 상태: 4주차 범위까지 완료. 로컬(H2) 검증 완료 + Cloudtype 에 실제 공개 배포됨.** JUnit 36건 · Postman 39개 단언 · OWASP ZAP High 0 통과.
 
 ## 핵심 개념
 
@@ -26,7 +26,7 @@ XSS/SQL Injection 방어를 적용한 보안 강화 웹 서비스입니다.
 
 ```
 secure-bulletin-board/                Spring Boot 프로젝트 루트
-├─ Dockerfile · .dockerignore         Render 배포용 컨테이너 이미지 정의
+├─ Dockerfile · .dockerignore         컨테이너 이미지 정의 (Render 용, 지금은 Cloudtype 배포 중)
 ├─ build.gradle · settings.gradle     Gradle 빌드 설정
 ├─ gradlew · gradlew.bat · gradle/    Gradle Wrapper (9.5.1)
 ├─ src/
@@ -65,12 +65,12 @@ secure-bulletin-board/                Spring Boot 프로젝트 루트
    ├─ 02_UI_UX설계.md         화면별 명세·와이어프레임·공통 컴포넌트·접근성
    ├─ 03_백엔드구조.md         패키지 구조·계층 의존 규칙·인증/인가 흐름·예외 처리
    ├─ 04_API테스트_Postman.md  Postman 콜렉션·환경변수·침투 테스트·Newman
-   └─ 05_배포.md              배포 절차 — Render(앱) + Supabase(DB)
+   └─ 05_배포.md              배포 문서 — 실제 배포처(Cloudtype)와 대안(Render+Supabase) 절차
 ```
 
 ## 실행 방법
 
-**백엔드** (http://localhost:8080/api)
+**백엔드** (http://localhost:8080)
 
 ```bash
 ./gradlew bootRun
@@ -106,7 +106,7 @@ npx newman run postman/Secure_Bulletin_Board.postman_collection.json -e postman/
 | [docs/02_UI_UX설계.md](docs/02_UI_UX설계.md) | **UI/UX 설계** — 사이트맵·화면별 명세(목록/상세/작성/수정/로그인/회원가입)·공통 컴포넌트·접근성 |
 | [docs/03_백엔드구조.md](docs/03_백엔드구조.md) | **백엔드 구조** — 패키지 설계·계층 의존 규칙·인증/인가가 실제로 흐르는 경로·예외 처리 전략 |
 | [docs/04_API테스트_Postman.md](docs/04_API테스트_Postman.md) | **API 테스트 및 Postman 콜렉션** — 환경변수·테스트 스크립트·보안 침투 테스트 시나리오·Newman 자동화·CI/CD 통합 |
-| [docs/05_배포.md](docs/05_배포.md) | **배포 절차** — Render(앱) + Supabase(DB), 무료 호스트 비교와 검증 결과 |
+| [docs/05_배포.md](docs/05_배포.md) | **배포 문서** — 실제 배포(Cloudtype)와 대안(Render+Supabase) 절차, 무료 호스트 비교 |
 | [다이어그램.canvas](다이어그램.canvas) | Obsidian Canvas — 문서 맵·시스템 아키텍처(MVC)·ERD·4주 로드맵을 한 화면에서 시각화 (Obsidian에서 열어 확인) |
 
 ## 현재 상태
@@ -122,9 +122,9 @@ npx newman run postman/Secure_Bulletin_Board.postman_collection.json -e postman/
 | 보안 강화(XSS/CSRF/BCrypt/SQLi 검증) | ✅ 완료 — 4가지 방어 모두 테스트로 증명 |
 | 테스트 | ✅ JUnit 36건 + Postman 39개 단언 전부 통과 |
 | OWASP ZAP 스캔 | ✅ **High 0 · Low 0** — 지적 3건 수정 후 재스캔 |
-| 배포 | 🔶 **진행 중** — Render(앱) + Supabase(DB). Dockerfile·prod 프로파일 완료, 로컬에서 실제 Supabase 연결·회원가입·로그인 검증 완료. Render 서비스 생성은 다음 단계 |
+| 배포 | ✅ **Cloudtype에 배포됨** (H2 인메모리). ⚠️ context-path 제거는 로컬 검증만 끝났고 **실배포 반영 대기 중** — [docs/05](docs/05_배포.md) 상단 표 참고. Render+Supabase 조합도 코드·로컬 검증 완료, 영구 저장이 필요해지면 전환 가능 |
 
-**현재 전략**: 로컬은 `./gradlew bootRun` 하나로 완결됩니다(H2). 배포는 **Render + Supabase** 조합으로 진행 중입니다 — 신용카드 등록 없이 되는 조합을 여러 후보 중에서 골랐습니다. 자세한 비교와 절차는 [docs/05_배포.md](docs/05_배포.md).
+**현재 전략**: 로컬은 `./gradlew bootRun` 하나로 완결됩니다(H2). **실제 공개 배포는 Cloudtype**에서 돌아가고 있습니다 — 기본(H2) 프로파일 그대로라 서버가 재시작되면 데이터가 초기화됩니다. Render+Supabase(영구 저장) 조합도 코드와 연결 검증까지 끝나 있어, 데이터 영속성이 필요해지면 그쪽으로 옮길 수 있습니다. 자세한 비교와 절차는 [docs/05_배포.md](docs/05_배포.md).
 
 **검증 결과** — `./gradlew test` **36건 전부 통과** + 실행 중인 서버에서 직접 확인:
 - 비밀번호가 평문이 아닌 BCrypt 해시(`$2a$10$…`, 60자)로 저장되고, 같은 비밀번호도 사용자마다 다른 해시(salt)가 된다
@@ -142,7 +142,7 @@ npx newman run postman/Secure_Bulletin_Board.postman_collection.json -e postman/
 Content-Security-Policy: default-src 'self'; script-src 'self'; style-src 'self';
                          img-src 'self' data:; form-action 'self';
                          frame-ancestors 'self'; base-uri 'self'; object-src 'none'
-Set-Cookie: JSESSIONID=...; Path=/api; HttpOnly; SameSite=Lax
+Set-Cookie: JSESSIONID=...; Path=/; HttpOnly; SameSite=Lax
 ```
 
 CSP에 `'unsafe-inline'`이 없습니다. 그래서 Bootstrap을 CDN이 아니라 `static/css/`에서 서빙하고,

@@ -212,7 +212,7 @@ td {
 	</h2>
 
 	<h3>
-		Generated on Thu, 20 Aug 2026 22:19:19
+		Generated on Fri, 21 Aug 2026 12:14:06
 	</h3>
 
 	<h3>
@@ -245,7 +245,7 @@ td {
 					<div>Medium</div>
 				</td>
 				<td align="center">
-					<div>1</div>
+					<div>0</div>
 				</td>
 			</tr>
 			<tr>
@@ -261,7 +261,7 @@ td {
 					<div>Informational</div>
 				</td>
 				<td align="center">
-					<div>5</div>
+					<div>2</div>
 				</td>
 			</tr>
 			<tr>
@@ -319,7 +319,7 @@ td {
 					<div>ZAP warnings logged - see the zap.log file for details</div>
 				</td>
 				<td align="center">
-					<div>12   </div>
+					<div>3   </div>
 				</td>
 				</tr>
 			
@@ -337,7 +337,7 @@ td {
 					<div>Percentage of responses with status code 2xx</div>
 				</td>
 				<td align="center">
-					<div>95 %</div>
+					<div>69 %</div>
 				</td>
 				</tr>
 			
@@ -355,25 +355,7 @@ td {
 					<div>Percentage of responses with status code 3xx</div>
 				</td>
 				<td align="center">
-					<div>2 %</div>
-				</td>
-				</tr>
-			
-				<tr>
-				<td class="risk-0">
-					<div>Info</div>
-				</td>
-				<td>
-					<div>Informational</div>
-				</td>
-				<td>
-					<div>http://localhost:8080</div>
-				</td>
-				<td>
-					<div>Percentage of responses with status code 4xx</div>
-				</td>
-				<td align="center">
-					<div>2 %</div>
+					<div>30 %</div>
 				</td>
 				</tr>
 			
@@ -391,7 +373,7 @@ td {
 					<div>Percentage of endpoints with content type text/css</div>
 				</td>
 				<td align="center">
-					<div>18 %</div>
+					<div>22 %</div>
 				</td>
 				</tr>
 			
@@ -409,7 +391,7 @@ td {
 					<div>Percentage of endpoints with content type text/html</div>
 				</td>
 				<td align="center">
-					<div>72 %</div>
+					<div>44 %</div>
 				</td>
 				</tr>
 			
@@ -427,7 +409,7 @@ td {
 					<div>Percentage of endpoints with method GET</div>
 				</td>
 				<td align="center">
-					<div>81 %</div>
+					<div>77 %</div>
 				</td>
 				</tr>
 			
@@ -445,7 +427,7 @@ td {
 					<div>Percentage of endpoints with method POST</div>
 				</td>
 				<td align="center">
-					<div>18 %</div>
+					<div>22 %</div>
 				</td>
 				</tr>
 			
@@ -463,7 +445,7 @@ td {
 					<div>Count of total endpoints</div>
 				</td>
 				<td align="center">
-					<div>11   </div>
+					<div>9   </div>
 				</td>
 				</tr>
 			
@@ -481,7 +463,7 @@ td {
 					<div>Percentage of slow responses</div>
 				</td>
 				<td align="center">
-					<div>2 %</div>
+					<div>38 %</div>
 				</td>
 				</tr>
 			
@@ -511,43 +493,11 @@ td {
 					align="center">Number of Instances</th>
 			</tr>
 			<tr>
-				<td><a href="#10038">Content Security Policy (CSP) Header Not Set</a></td>
-				<td align="center" class="risk-2">Medium</td>
-				
-				
-				<td align="center">2</td>
-				
-			</tr>
-			<tr>
-				<td><a href="#10111">Authentication Request Identified</a></td>
-				<td align="center" class="risk-0">Informational</td>
-				
-				
-				<td align="center">1</td>
-				
-			</tr>
-			<tr>
-				<td><a href="#10058">GET for POST</a></td>
-				<td align="center" class="risk-0">Informational</td>
-				
-				
-				<td align="center">1</td>
-				
-			</tr>
-			<tr>
 				<td><a href="#10112">Session Management Response Identified</a></td>
 				<td align="center" class="risk-0">Informational</td>
 				
 				
-				<td align="center">1</td>
-				
-			</tr>
-			<tr>
-				<td><a href="#10104">User Agent Fuzzer</a></td>
-				<td align="center" class="risk-0">Informational</td>
-				
-				<td align="center">Systemic</td>
-				
+				<td align="center">2</td>
 				
 			</tr>
 			<tr>
@@ -564,336 +514,6 @@ td {
 
 	
 		<h3>Alert Detail</h3>
-		
-			<table class="results">
-				<tr height="24">
-					<th width="20%" class="risk-2"><a
-						id="10038"></a>
-						<div>Medium</div></th>
-					<th class="risk-2">Content Security Policy (CSP) Header Not Set</th>
-				</tr>
-				<tr>
-					<td width="20%">Description</td>
-					<td width="80%">
-							<div>Content Security Policy (CSP) is an added layer of security that helps to detect and mitigate certain types of attacks, including Cross Site Scripting (XSS) and data injection attacks. These attacks are used for everything from data theft to site defacement or distribution of malware. CSP provides a set of standard HTTP headers that allow website owners to declare approved sources of content that browsers should be allowed to load on that page — covered types are JavaScript, CSS, HTML frames, fonts, images and embeddable objects such as Java applets, ActiveX, audio and video files.</div>
-							
-						</td>
-				</tr>
-				<TR vAlign="top">
-					<TD colspan="2"></TD>
-				</TR>
-				
-					<tr>
-						<td width="20%"
-							class="indent1">URL</td>
-						<td width="80%"><a href="http://localhost:8080/robots.txt">http://localhost:8080/robots.txt</a></td>
-					</tr>
-					<tr>
-						<td width="20%"
-							class="indent2">Node Name</td>
-						<td width="80%">http://localhost:8080/robots.txt</td>
-					</tr>
-					<tr>
-						<td width="20%"
-							class="indent2">Method</td>
-						<td width="80%">GET</td>
-					</tr>
-					<tr>
-						<td width="20%"
-							class="indent2">Parameter</td>
-						<td width="80%"></td>
-					</tr>
-					<tr>
-						<td width="20%"
-							class="indent2">Attack</td>
-						<td width="80%"></td>
-					</tr>
-					<tr>
-						<td width="20%"
-							class="indent2">Evidence</td>
-						<td width="80%"></td>
-					</tr>
-					<tr>
-						<td width="20%"
-							class="indent2">Other Info</td>
-						<td width="80%"></td>
-					</tr>
-				
-					<tr>
-						<td width="20%"
-							class="indent1">URL</td>
-						<td width="80%"><a href="http://localhost:8080/sitemap.xml">http://localhost:8080/sitemap.xml</a></td>
-					</tr>
-					<tr>
-						<td width="20%"
-							class="indent2">Node Name</td>
-						<td width="80%">http://localhost:8080/sitemap.xml</td>
-					</tr>
-					<tr>
-						<td width="20%"
-							class="indent2">Method</td>
-						<td width="80%">GET</td>
-					</tr>
-					<tr>
-						<td width="20%"
-							class="indent2">Parameter</td>
-						<td width="80%"></td>
-					</tr>
-					<tr>
-						<td width="20%"
-							class="indent2">Attack</td>
-						<td width="80%"></td>
-					</tr>
-					<tr>
-						<td width="20%"
-							class="indent2">Evidence</td>
-						<td width="80%"></td>
-					</tr>
-					<tr>
-						<td width="20%"
-							class="indent2">Other Info</td>
-						<td width="80%"></td>
-					</tr>
-				
-				<tr>
-					<td width="20%">Instances</td>
-					
-					
-					<td width="80%">2</td>
-					
-				</tr>
-				<tr>
-					<td width="20%">Solution</td>
-					<td width="80%">
-							<div>Ensure that your web server, application server, load balancer, etc. is configured to set the Content-Security-Policy header.</div>
-							
-						</td>
-				</tr>
-				<tr>
-					<td width="20%">Reference</td>
-					<td width="80%">
-							<a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/CSP">https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/CSP</a>
-							<br />
-						
-							<a href="https://cheatsheetseries.owasp.org/cheatsheets/Content_Security_Policy_Cheat_Sheet.html">https://cheatsheetseries.owasp.org/cheatsheets/Content_Security_Policy_Cheat_Sheet.html</a>
-							<br />
-						
-							<a href="https://www.w3.org/TR/CSP/">https://www.w3.org/TR/CSP/</a>
-							<br />
-						
-							<a href="https://w3c.github.io/webappsec-csp/">https://w3c.github.io/webappsec-csp/</a>
-							<br />
-						
-							<a href="https://web.dev/articles/csp">https://web.dev/articles/csp</a>
-							<br />
-						
-							<a href="https://caniuse.com/#feat=contentsecuritypolicy">https://caniuse.com/#feat=contentsecuritypolicy</a>
-							<br />
-						
-							<a href="https://content-security-policy.com/">https://content-security-policy.com/</a>
-							
-						</td>
-				</tr>
-				<tr>
-					<td width="20%">CWE Id</td>
-					<td width="80%"><a
-						href="https://cwe.mitre.org/data/definitions/693.html">693</a></td>
-				</tr>
-				<tr>
-					<td width="20%">WASC Id</td>
-					<td width="80%">15</td>
-				</tr>
-				<tr>
-					<td width="20%">Plugin Id</td>
-					<td width="80%"><a
-						href="https://www.zaproxy.org/docs/alerts/10038/">10038</a></td>
-				</tr>
-			</table>
-			<div class="spacer"></div>
-		
-			<table class="results">
-				<tr height="24">
-					<th width="20%" class="risk-0"><a
-						id="10111"></a>
-						<div>Informational</div></th>
-					<th class="risk-0">Authentication Request Identified</th>
-				</tr>
-				<tr>
-					<td width="20%">Description</td>
-					<td width="80%">
-							<div>The given request has been identified as an authentication request. The &#39;Other Info&#39; field contains a set of key=value lines which identify any relevant fields. If the request is in a context which has an Authentication Method set to &quot;Auto-Detect&quot; then this rule will change the authentication to match the request identified.</div>
-							
-						</td>
-				</tr>
-				<TR vAlign="top">
-					<TD colspan="2"></TD>
-				</TR>
-				
-					<tr>
-						<td width="20%"
-							class="indent1">URL</td>
-						<td width="80%"><a href="http://localhost:8080/api/auth/login">http://localhost:8080/api/auth/login</a></td>
-					</tr>
-					<tr>
-						<td width="20%"
-							class="indent2">Node Name</td>
-						<td width="80%">http://localhost:8080/api/auth/login ()(_csrf,password,username)</td>
-					</tr>
-					<tr>
-						<td width="20%"
-							class="indent2">Method</td>
-						<td width="80%">POST</td>
-					</tr>
-					<tr>
-						<td width="20%"
-							class="indent2">Parameter</td>
-						<td width="80%">username</td>
-					</tr>
-					<tr>
-						<td width="20%"
-							class="indent2">Attack</td>
-						<td width="80%"></td>
-					</tr>
-					<tr>
-						<td width="20%"
-							class="indent2">Evidence</td>
-						<td width="80%">password</td>
-					</tr>
-					<tr>
-						<td width="20%"
-							class="indent2">Other Info</td>
-						<td width="80%">userParam=username
-userValue=ZAP
-passwordParam=password
-referer=http://localhost:8080/api/auth/login
-csrfToken=_csrf</td>
-					</tr>
-				
-				<tr>
-					<td width="20%">Instances</td>
-					
-					
-					<td width="80%">1</td>
-					
-				</tr>
-				<tr>
-					<td width="20%">Solution</td>
-					<td width="80%">
-							<div>This is an informational alert rather than a vulnerability and so there is nothing to fix.</div>
-							
-						</td>
-				</tr>
-				<tr>
-					<td width="20%">Reference</td>
-					<td width="80%">
-							<a href="https://www.zaproxy.org/docs/desktop/addons/authentication-helper/auth-req-id/">https://www.zaproxy.org/docs/desktop/addons/authentication-helper/auth-req-id/</a>
-							
-						</td>
-				</tr>
-				<tr>
-					<td width="20%">CWE Id</td>
-					<td width="80%"></td>
-				</tr>
-				<tr>
-					<td width="20%">WASC Id</td>
-					<td width="80%"></td>
-				</tr>
-				<tr>
-					<td width="20%">Plugin Id</td>
-					<td width="80%"><a
-						href="https://www.zaproxy.org/docs/alerts/10111/">10111</a></td>
-				</tr>
-			</table>
-			<div class="spacer"></div>
-		
-			<table class="results">
-				<tr height="24">
-					<th width="20%" class="risk-0"><a
-						id="10058"></a>
-						<div>Informational</div></th>
-					<th class="risk-0">GET for POST</th>
-				</tr>
-				<tr>
-					<td width="20%">Description</td>
-					<td width="80%">
-							<div>A request that was originally observed as a POST was also accepted as a GET. This issue does not represent a security weakness unto itself, however, it may facilitate simplification of other attacks. For example if the original POST is subject to Cross-Site Scripting (XSS), then this finding may indicate that a simplified (GET based) XSS may also be possible.</div>
-							
-						</td>
-				</tr>
-				<TR vAlign="top">
-					<TD colspan="2"></TD>
-				</TR>
-				
-					<tr>
-						<td width="20%"
-							class="indent1">URL</td>
-						<td width="80%"><a href="http://localhost:8080/api/auth/signup">http://localhost:8080/api/auth/signup</a></td>
-					</tr>
-					<tr>
-						<td width="20%"
-							class="indent2">Node Name</td>
-						<td width="80%">http://localhost:8080/api/auth/signup (_csrf,email,password,passwordConfirm,username)</td>
-					</tr>
-					<tr>
-						<td width="20%"
-							class="indent2">Method</td>
-						<td width="80%">GET</td>
-					</tr>
-					<tr>
-						<td width="20%"
-							class="indent2">Parameter</td>
-						<td width="80%"></td>
-					</tr>
-					<tr>
-						<td width="20%"
-							class="indent2">Attack</td>
-						<td width="80%"></td>
-					</tr>
-					<tr>
-						<td width="20%"
-							class="indent2">Evidence</td>
-						<td width="80%">GET http://localhost:8080/api/auth/signup?_csrf=NIuPCFuiCqpI3pDqn730-bVk-UejcJDlvIWtt5reqPN7gtUrUr3pbG6Vb5pl7fbYqJDAzIJV1H_GRfXIiuHMgKzvzMFI4OYe&amp;email=zaproxy@example.com&amp;password=ZAP&amp;passwordConfirm=ZAP&amp;username=ZAP HTTP/1.1</td>
-					</tr>
-					<tr>
-						<td width="20%"
-							class="indent2">Other Info</td>
-						<td width="80%"></td>
-					</tr>
-				
-				<tr>
-					<td width="20%">Instances</td>
-					
-					
-					<td width="80%">1</td>
-					
-				</tr>
-				<tr>
-					<td width="20%">Solution</td>
-					<td width="80%">
-							<div>Ensure that only POST is accepted where POST is expected.</div>
-							
-						</td>
-				</tr>
-				<tr>
-					<td width="20%">Reference</td>
-					<td width="80%"></td>
-				</tr>
-				<tr>
-					<td width="20%">CWE Id</td>
-					<td width="80%"><a
-						href="https://cwe.mitre.org/data/definitions/16.html">16</a></td>
-				</tr>
-				<tr>
-					<td width="20%">WASC Id</td>
-					<td width="80%">20</td>
-				</tr>
-				<tr>
-					<td width="20%">Plugin Id</td>
-					<td width="80%"><a
-						href="https://www.zaproxy.org/docs/alerts/10058/">10058</a></td>
-				</tr>
-			</table>
-			<div class="spacer"></div>
 		
 			<table class="results">
 				<tr height="24">
@@ -916,12 +536,48 @@ csrfToken=_csrf</td>
 					<tr>
 						<td width="20%"
 							class="indent1">URL</td>
-						<td width="80%"><a href="http://localhost:8080/api/auth/signup">http://localhost:8080/api/auth/signup</a></td>
+						<td width="80%"><a href="http://localhost:8080/sitemap.xml">http://localhost:8080/sitemap.xml</a></td>
 					</tr>
 					<tr>
 						<td width="20%"
 							class="indent2">Node Name</td>
-						<td width="80%">http://localhost:8080/api/auth/signup</td>
+						<td width="80%">http://localhost:8080/sitemap.xml</td>
+					</tr>
+					<tr>
+						<td width="20%"
+							class="indent2">Method</td>
+						<td width="80%">GET</td>
+					</tr>
+					<tr>
+						<td width="20%"
+							class="indent2">Parameter</td>
+						<td width="80%">JSESSIONID</td>
+					</tr>
+					<tr>
+						<td width="20%"
+							class="indent2">Attack</td>
+						<td width="80%"></td>
+					</tr>
+					<tr>
+						<td width="20%"
+							class="indent2">Evidence</td>
+						<td width="80%">JSESSIONID</td>
+					</tr>
+					<tr>
+						<td width="20%"
+							class="indent2">Other Info</td>
+						<td width="80%">cookie:JSESSIONID</td>
+					</tr>
+				
+					<tr>
+						<td width="20%"
+							class="indent1">URL</td>
+						<td width="80%"><a href="http://localhost:8080/auth/signup">http://localhost:8080/auth/signup</a></td>
+					</tr>
+					<tr>
+						<td width="20%"
+							class="indent2">Node Name</td>
+						<td width="80%">http://localhost:8080/auth/signup</td>
 					</tr>
 					<tr>
 						<td width="20%"
@@ -953,7 +609,7 @@ csrfToken=_csrf</td>
 					<td width="20%">Instances</td>
 					
 					
-					<td width="80%">1</td>
+					<td width="80%">2</td>
 					
 				</tr>
 				<tr>
@@ -989,238 +645,6 @@ csrfToken=_csrf</td>
 			<table class="results">
 				<tr height="24">
 					<th width="20%" class="risk-0"><a
-						id="10104"></a>
-						<div>Informational</div></th>
-					<th class="risk-0">User Agent Fuzzer</th>
-				</tr>
-				<tr>
-					<td width="20%">Description</td>
-					<td width="80%">
-							<div>Check for differences in response based on fuzzed User Agent (eg. mobile sites, access as a Search Engine Crawler). Compares the response statuscode and the hashcode of the response body with the original response.</div>
-							
-						</td>
-				</tr>
-				<TR vAlign="top">
-					<TD colspan="2"></TD>
-				</TR>
-				
-					<tr>
-						<td width="20%"
-							class="indent1">URL</td>
-						<td width="80%"><a href="http://localhost:8080/api/auth">http://localhost:8080/api/auth</a></td>
-					</tr>
-					<tr>
-						<td width="20%"
-							class="indent2">Node Name</td>
-						<td width="80%">http://localhost:8080/api/auth</td>
-					</tr>
-					<tr>
-						<td width="20%"
-							class="indent2">Method</td>
-						<td width="80%">GET</td>
-					</tr>
-					<tr>
-						<td width="20%"
-							class="indent2">Parameter</td>
-						<td width="80%">Header User-Agent</td>
-					</tr>
-					<tr>
-						<td width="20%"
-							class="indent2">Attack</td>
-						<td width="80%">Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 6.1)</td>
-					</tr>
-					<tr>
-						<td width="20%"
-							class="indent2">Evidence</td>
-						<td width="80%"></td>
-					</tr>
-					<tr>
-						<td width="20%"
-							class="indent2">Other Info</td>
-						<td width="80%"></td>
-					</tr>
-				
-					<tr>
-						<td width="20%"
-							class="indent1">URL</td>
-						<td width="80%"><a href="http://localhost:8080/api/auth/login">http://localhost:8080/api/auth/login</a></td>
-					</tr>
-					<tr>
-						<td width="20%"
-							class="indent2">Node Name</td>
-						<td width="80%">http://localhost:8080/api/auth/login</td>
-					</tr>
-					<tr>
-						<td width="20%"
-							class="indent2">Method</td>
-						<td width="80%">GET</td>
-					</tr>
-					<tr>
-						<td width="20%"
-							class="indent2">Parameter</td>
-						<td width="80%">Header User-Agent</td>
-					</tr>
-					<tr>
-						<td width="20%"
-							class="indent2">Attack</td>
-						<td width="80%">Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 6.1)</td>
-					</tr>
-					<tr>
-						<td width="20%"
-							class="indent2">Evidence</td>
-						<td width="80%"></td>
-					</tr>
-					<tr>
-						<td width="20%"
-							class="indent2">Other Info</td>
-						<td width="80%"></td>
-					</tr>
-				
-					<tr>
-						<td width="20%"
-							class="indent1">URL</td>
-						<td width="80%"><a href="http://localhost:8080/api/auth/signup">http://localhost:8080/api/auth/signup</a></td>
-					</tr>
-					<tr>
-						<td width="20%"
-							class="indent2">Node Name</td>
-						<td width="80%">http://localhost:8080/api/auth/signup</td>
-					</tr>
-					<tr>
-						<td width="20%"
-							class="indent2">Method</td>
-						<td width="80%">GET</td>
-					</tr>
-					<tr>
-						<td width="20%"
-							class="indent2">Parameter</td>
-						<td width="80%">Header User-Agent</td>
-					</tr>
-					<tr>
-						<td width="20%"
-							class="indent2">Attack</td>
-						<td width="80%">Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 6.1)</td>
-					</tr>
-					<tr>
-						<td width="20%"
-							class="indent2">Evidence</td>
-						<td width="80%"></td>
-					</tr>
-					<tr>
-						<td width="20%"
-							class="indent2">Other Info</td>
-						<td width="80%"></td>
-					</tr>
-				
-					<tr>
-						<td width="20%"
-							class="indent1">URL</td>
-						<td width="80%"><a href="http://localhost:8080/api/auth/login">http://localhost:8080/api/auth/login</a></td>
-					</tr>
-					<tr>
-						<td width="20%"
-							class="indent2">Node Name</td>
-						<td width="80%">http://localhost:8080/api/auth/login ()(_csrf,password,username)</td>
-					</tr>
-					<tr>
-						<td width="20%"
-							class="indent2">Method</td>
-						<td width="80%">POST</td>
-					</tr>
-					<tr>
-						<td width="20%"
-							class="indent2">Parameter</td>
-						<td width="80%">Header User-Agent</td>
-					</tr>
-					<tr>
-						<td width="20%"
-							class="indent2">Attack</td>
-						<td width="80%">Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 6.1)</td>
-					</tr>
-					<tr>
-						<td width="20%"
-							class="indent2">Evidence</td>
-						<td width="80%"></td>
-					</tr>
-					<tr>
-						<td width="20%"
-							class="indent2">Other Info</td>
-						<td width="80%"></td>
-					</tr>
-				
-					<tr>
-						<td width="20%"
-							class="indent1">URL</td>
-						<td width="80%"><a href="http://localhost:8080/api/auth/signup">http://localhost:8080/api/auth/signup</a></td>
-					</tr>
-					<tr>
-						<td width="20%"
-							class="indent2">Node Name</td>
-						<td width="80%">http://localhost:8080/api/auth/signup ()(_csrf,email,password,passwordConfirm,username)</td>
-					</tr>
-					<tr>
-						<td width="20%"
-							class="indent2">Method</td>
-						<td width="80%">POST</td>
-					</tr>
-					<tr>
-						<td width="20%"
-							class="indent2">Parameter</td>
-						<td width="80%">Header User-Agent</td>
-					</tr>
-					<tr>
-						<td width="20%"
-							class="indent2">Attack</td>
-						<td width="80%">Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 6.1)</td>
-					</tr>
-					<tr>
-						<td width="20%"
-							class="indent2">Evidence</td>
-						<td width="80%"></td>
-					</tr>
-					<tr>
-						<td width="20%"
-							class="indent2">Other Info</td>
-						<td width="80%"></td>
-					</tr>
-				
-				<tr>
-					<td width="20%">Instances</td>
-					
-					<td width="80%">Systemic</td>
-					
-					
-				</tr>
-				<tr>
-					<td width="20%">Solution</td>
-					<td width="80%"></td>
-				</tr>
-				<tr>
-					<td width="20%">Reference</td>
-					<td width="80%">
-							<a href="https://owasp.org/wstg">https://owasp.org/wstg</a>
-							
-						</td>
-				</tr>
-				<tr>
-					<td width="20%">CWE Id</td>
-					<td width="80%"></td>
-				</tr>
-				<tr>
-					<td width="20%">WASC Id</td>
-					<td width="80%"></td>
-				</tr>
-				<tr>
-					<td width="20%">Plugin Id</td>
-					<td width="80%"><a
-						href="https://www.zaproxy.org/docs/alerts/10104/">10104</a></td>
-				</tr>
-			</table>
-			<div class="spacer"></div>
-		
-			<table class="results">
-				<tr height="24">
-					<th width="20%" class="risk-0"><a
 						id="10031"></a>
 						<div>Informational</div></th>
 					<th class="risk-0">User Controllable HTML Element Attribute (Potential XSS)</th>
@@ -1239,12 +663,12 @@ csrfToken=_csrf</td>
 					<tr>
 						<td width="20%"
 							class="indent1">URL</td>
-						<td width="80%"><a href="http://localhost:8080/api/auth/signup">http://localhost:8080/api/auth/signup</a></td>
+						<td width="80%"><a href="http://localhost:8080/auth/signup">http://localhost:8080/auth/signup</a></td>
 					</tr>
 					<tr>
 						<td width="20%"
 							class="indent2">Node Name</td>
-						<td width="80%">http://localhost:8080/api/auth/signup ()(_csrf,email,password,passwordConfirm,username)</td>
+						<td width="80%">http://localhost:8080/auth/signup ()(_csrf,email,password,passwordConfirm,username)</td>
 					</tr>
 					<tr>
 						<td width="20%"
@@ -1271,7 +695,7 @@ csrfToken=_csrf</td>
 							class="indent2">Other Info</td>
 						<td width="80%">User-controlled HTML attribute values were found. Try injecting special characters to see if XSS might be possible. The page at the following URL:
 
-http://localhost:8080/api/auth/signup
+http://localhost:8080/auth/signup
 
 appears to include user input in:
 a(n) [input] tag [value] attribute
@@ -1286,12 +710,12 @@ zaproxy@example.com</td>
 					<tr>
 						<td width="20%"
 							class="indent1">URL</td>
-						<td width="80%"><a href="http://localhost:8080/api/auth/signup">http://localhost:8080/api/auth/signup</a></td>
+						<td width="80%"><a href="http://localhost:8080/auth/signup">http://localhost:8080/auth/signup</a></td>
 					</tr>
 					<tr>
 						<td width="20%"
 							class="indent2">Node Name</td>
-						<td width="80%">http://localhost:8080/api/auth/signup ()(_csrf,email,password,passwordConfirm,username)</td>
+						<td width="80%">http://localhost:8080/auth/signup ()(_csrf,email,password,passwordConfirm,username)</td>
 					</tr>
 					<tr>
 						<td width="20%"
@@ -1318,7 +742,7 @@ zaproxy@example.com</td>
 							class="indent2">Other Info</td>
 						<td width="80%">User-controlled HTML attribute values were found. Try injecting special characters to see if XSS might be possible. The page at the following URL:
 
-http://localhost:8080/api/auth/signup
+http://localhost:8080/auth/signup
 
 appears to include user input in:
 a(n) [input] tag [value] attribute
@@ -1333,12 +757,12 @@ zap</td>
 					<tr>
 						<td width="20%"
 							class="indent1">URL</td>
-						<td width="80%"><a href="http://localhost:8080/api/auth/signup">http://localhost:8080/api/auth/signup</a></td>
+						<td width="80%"><a href="http://localhost:8080/auth/signup">http://localhost:8080/auth/signup</a></td>
 					</tr>
 					<tr>
 						<td width="20%"
 							class="indent2">Node Name</td>
-						<td width="80%">http://localhost:8080/api/auth/signup ()(_csrf,email,password,passwordConfirm,username)</td>
+						<td width="80%">http://localhost:8080/auth/signup ()(_csrf,email,password,passwordConfirm,username)</td>
 					</tr>
 					<tr>
 						<td width="20%"
@@ -1365,7 +789,7 @@ zap</td>
 							class="indent2">Other Info</td>
 						<td width="80%">User-controlled HTML attribute values were found. Try injecting special characters to see if XSS might be possible. The page at the following URL:
 
-http://localhost:8080/api/auth/signup
+http://localhost:8080/auth/signup
 
 appears to include user input in:
 a(n) [input] tag [value] attribute
@@ -1380,12 +804,12 @@ zap</td>
 					<tr>
 						<td width="20%"
 							class="indent1">URL</td>
-						<td width="80%"><a href="http://localhost:8080/api/auth/signup">http://localhost:8080/api/auth/signup</a></td>
+						<td width="80%"><a href="http://localhost:8080/auth/signup">http://localhost:8080/auth/signup</a></td>
 					</tr>
 					<tr>
 						<td width="20%"
 							class="indent2">Node Name</td>
-						<td width="80%">http://localhost:8080/api/auth/signup ()(_csrf,email,password,passwordConfirm,username)</td>
+						<td width="80%">http://localhost:8080/auth/signup ()(_csrf,email,password,passwordConfirm,username)</td>
 					</tr>
 					<tr>
 						<td width="20%"
@@ -1412,7 +836,7 @@ zap</td>
 							class="indent2">Other Info</td>
 						<td width="80%">User-controlled HTML attribute values were found. Try injecting special characters to see if XSS might be possible. The page at the following URL:
 
-http://localhost:8080/api/auth/signup
+http://localhost:8080/auth/signup
 
 appears to include user input in:
 a(n) [input] tag [value] attribute
