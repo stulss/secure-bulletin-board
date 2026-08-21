@@ -122,7 +122,7 @@ npx newman run postman/Secure_Bulletin_Board.postman_collection.json -e postman/
 | 보안 강화(XSS/CSRF/BCrypt/SQLi 검증) | ✅ 완료 — 4가지 방어 모두 테스트로 증명 |
 | 테스트 | ✅ JUnit 36건 + Postman 39개 단언 전부 통과 |
 | OWASP ZAP 스캔 | ✅ **High 0 · Low 0** — 지적 3건 수정 후 재스캔 |
-| 배포 | ✅ **Cloudtype에 배포됨** (H2 인메모리). ⚠️ context-path 제거는 로컬 검증만 끝났고 **실배포 반영 대기 중** — [docs/05](docs/05_배포.md) 상단 표 참고. Render+Supabase 조합도 코드·로컬 검증 완료, 영구 저장이 필요해지면 전환 가능 |
+| 배포 | ✅ **Cloudtype에 배포 완료** — [실제 서비스 링크](https://port-0-secure-bulletin-board-hkty2alqfca1m4.sel4.cloudtype.app/posts). 배포 URL에서 Postman 39건·ZAP(High 0·Medium 0·Low 1, 근거는 [docs/05](docs/05_배포.md))까지 재검증 완료. H2 인메모리라 재시작 시 데이터는 초기화됨 — Render+Supabase(영구 저장)로 전환 가능 |
 
 **현재 전략**: 로컬은 `./gradlew bootRun` 하나로 완결됩니다(H2). **실제 공개 배포는 Cloudtype**에서 돌아가고 있습니다 — 기본(H2) 프로파일 그대로라 서버가 재시작되면 데이터가 초기화됩니다. Render+Supabase(영구 저장) 조합도 코드와 연결 검증까지 끝나 있어, 데이터 영속성이 필요해지면 그쪽으로 옮길 수 있습니다. 자세한 비교와 절차는 [docs/05_배포.md](docs/05_배포.md).
 

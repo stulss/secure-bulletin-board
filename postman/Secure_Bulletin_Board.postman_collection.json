@@ -49,7 +49,7 @@
 					"const raw = pm.request.body ? JSON.stringify(pm.request.body) : '';",
 					"if (pm.request.method === 'POST' && raw.indexOf('csrfToken') !== -1) {",
 					"    pm.sendRequest({",
-					"        url: pm.collectionVariables.get('baseUrl') + '/auth/login',",
+					"        url: pm.variables.get('baseUrl') + '/auth/login',",
 					"        method: 'GET'",
 					"    }, function (err, res) {",
 					"        if (err) { console.log('CSRF 발급 실패: ' + err); return; }",
