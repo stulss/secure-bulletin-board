@@ -1,0 +1,69 @@
+# 배포(운영) 프로파일 — Render(앱) + Supabase(PostgreSQL) 기준
+#
+# 활성화: 환경변수 SPRING_PROFILES_ACTIVE=prod
+# 이 파일은 저장소에 커밋되지만, 실제 접속 정보는 전부 환경변수로 주입받으므로
+# 여기에 비밀번호가 들어가지 않는다. 값을 하드코딩하지 말 것.
+#
+# Render 서비스의 Environment 탭에 설정할 환경변수:
+#   SPRING_PROFILES_ACTIVE = prod
+#   DB_USER     = postgres
+#   DB_PASSWORD = (Supabase 프로젝트 생성 시 정한 비밀번호)
+#   DB_URL      = jdbc:postgresql://<Supabase Host>:5432/postgres
+#                 Supabase 대시보드 → Project Settings → Database → Connection string
+#                 → URI 를 jdbc: 접두사 붙여 변환. Session pooler(포트 6543)가 아니라
+#                 Direct connection(포트 5432)을 쓸 것 — 세션 인증에 커넥션이 오래 유지된다.
+#
+# 드라이버와 방언(dialect)은 고정하지 않는다.
+# Spring Boot 가 JDBC URL 로 드라이버를, 실제 커넥션 메타데이터로 방언을 알아낸다.
+
+spring:
+  datasource:
+    url: ${DB_URL}
+    username: ${DB_USER}
+    password: ${DB_PASSWORD}
+
+  jpa:
+    hibernate:
+      # 운영에서 create-drop 은 절대 금지 — 재시작마다 데이터가 사라진다.
+      # validate 는 엔티티와 실제 테이블이 어긋나면 기동을 거부하므로,
+      # 스키마가 조용히 틀어진 채 돌아가는 상황을 막아준다.
+      #
+      # 최초 배포 시에는 테이블이 없어 기동에 실패한다.
+      # db/schema-postgres.sql 을 Supabase SQL Editor 에서 한 번 실행한 뒤 띄울 것.
+      # (docs/05_배포.md 참고)
+      ddl-auto: validate
+    show-sql: false
+    open-in-view: false   # 뷰 렌더링 중 커넥션을 붙잡지 않는다 (커넥션 고갈 방지)
+
+  # 운영에서는 H2 콘솔을 열지 않는다.
+  # 열어두면 DB 스키마와 데이터를 웹으로 노출하는 셈이 된다.
+  h2:
+    console:
+      enabled: false
+
+  thymeleaf:
+    cache: true   # 운영에서는 템플릿 캐시를 켠다
+
+server:
+  # Render 가 PORT 를 주입한다. (기본값은 application.yml 의 8080)
+  servlet:
+    session:
+      cookie:
+        http-only: true
+        same-site: lax
+        # HTTPS 전용 쿠키. Render 는 배포 도메인에 HTTPS 를 자동 적용하므로 켠다.
+        # (로컬 http 에서 켜면 쿠키가 전송되지 않아 로그인이 되지 않는다 — 그래서 prod 에만 둔다)
+        secure: true
+
+  # 오류 화면에 스택 트레이스나 예외 메시지를 노출하지 않는다.
+  error:
+    include-stacktrace: never
+    include-message: never
+    include-exception: false
+
+logging:
+  level:
+    root: WARN
+    com.securitybulletin: INFO
+    # 운영에서 Security 디버그 로그는 남기지 않는다 — 인증 관련 내부 정보가 로그로 샌다.
+    org.springframework.security: WARN

@@ -18,7 +18,7 @@ XSS/SQL Injection 방어를 적용한 보안 강화 웹 서비스입니다.
 |---|---|
 | Backend | Java 17, Spring Boot 3.x, Spring Security, Spring Data JPA |
 | Frontend | Thymeleaf + Bootstrap 5 (서버 렌더링, 로컬 서빙) |
-| Database | H2 인메모리 (로컬 전용) |
+| Database | H2 (로컬 개발), Supabase PostgreSQL (배포) |
 | Build | Gradle 9.5.1 (Wrapper 포함) |
 | Test | JUnit 5, Spring Security Test, `@SpringBootTest`, Postman/newman, OWASP ZAP 2.17 |
 
@@ -26,6 +26,7 @@ XSS/SQL Injection 방어를 적용한 보안 강화 웹 서비스입니다.
 
 ```
 secure-bulletin-board/                Spring Boot 프로젝트 루트
+├─ Dockerfile · .dockerignore         Render 배포용 컨테이너 이미지 정의
 ├─ build.gradle · settings.gradle     Gradle 빌드 설정
 ├─ gradlew · gradlew.bat · gradle/    Gradle Wrapper (9.5.1)
 ├─ src/
@@ -36,7 +37,9 @@ secure-bulletin-board/                Spring Boot 프로젝트 루트
 │  │  ├─ user/                        User 엔티티·Repository·Service·Controller·DTO
 │  │  └─ post/                        Post 엔티티·Repository·Service(소유자 검증)·Controller·Form
 │  └─ main/resources/
-│     ├─ application.yml              H2·JPA·Thymeleaf·세션 쿠키 설정
+│     ├─ application.yml              H2·JPA·Thymeleaf·세션 쿠키 설정 (로컬)
+│     ├─ application-prod.yml         운영 프로파일 — DB·쿠키·로그 설정 (배포)
+│     ├─ db/schema-postgres.sql       Supabase 초기 스키마 (Hibernate 생성 DDL)
 │     ├─ static/css/                  bootstrap.min.css · app.css (CDN 미사용)
 │     └─ templates/
 │        ├─ auth/                     login.html · signup.html
@@ -62,7 +65,7 @@ secure-bulletin-board/                Spring Boot 프로젝트 루트
    ├─ 02_UI_UX설계.md         화면별 명세·와이어프레임·공통 컴포넌트·접근성
    ├─ 03_백엔드구조.md         패키지 구조·계층 의존 규칙·인증/인가 흐름·예외 처리
    ├─ 04_API테스트_Postman.md  Postman 콜렉션·환경변수·침투 테스트·Newman
-   └─ 05_배포.md              배포처 조사 기록 (배포는 하지 않기로 함)
+   └─ 05_배포.md              배포 절차 — Render(앱) + Supabase(DB)
 ```
 
 ## 실행 방법
@@ -103,7 +106,7 @@ npx newman run postman/Secure_Bulletin_Board.postman_collection.json -e postman/
 | [docs/02_UI_UX설계.md](docs/02_UI_UX설계.md) | **UI/UX 설계** — 사이트맵·화면별 명세(목록/상세/작성/수정/로그인/회원가입)·공통 컴포넌트·접근성 |
 | [docs/03_백엔드구조.md](docs/03_백엔드구조.md) | **백엔드 구조** — 패키지 설계·계층 의존 규칙·인증/인가가 실제로 흐르는 경로·예외 처리 전략 |
 | [docs/04_API테스트_Postman.md](docs/04_API테스트_Postman.md) | **API 테스트 및 Postman 콜렉션** — 환경변수·테스트 스크립트·보안 침투 테스트 시나리오·Newman 자동화·CI/CD 통합 |
-| [docs/05_배포.md](docs/05_배포.md) | **배포 조사 기록** — 무료 Java 호스트 비교(Render·Cloudtype·Cloud Run·Vercel), 중단 사유와 복구 방법 |
+| [docs/05_배포.md](docs/05_배포.md) | **배포 절차** — Render(앱) + Supabase(DB), 무료 호스트 비교와 검증 결과 |
 | [다이어그램.canvas](다이어그램.canvas) | Obsidian Canvas — 문서 맵·시스템 아키텍처(MVC)·ERD·4주 로드맵을 한 화면에서 시각화 (Obsidian에서 열어 확인) |
 
 ## 현재 상태
@@ -119,9 +122,9 @@ npx newman run postman/Secure_Bulletin_Board.postman_collection.json -e postman/
 | 보안 강화(XSS/CSRF/BCrypt/SQLi 검증) | ✅ 완료 — 4가지 방어 모두 테스트로 증명 |
 | 테스트 | ✅ JUnit 36건 + Postman 39개 단언 전부 통과 |
 | OWASP ZAP 스캔 | ✅ **High 0 · Low 0** — 지적 3건 수정 후 재스캔 |
-| 배포 | ⬜ **하지 않음** — 무료 Java 호스트가 카드 등록을 요구해 중단. 근거와 재개 방법은 [docs/05_배포.md](docs/05_배포.md) |
+| 배포 | 🔶 **진행 중** — Render(앱) + Supabase(DB). Dockerfile·prod 프로파일 완료, 로컬에서 실제 Supabase 연결·회원가입·로그인 검증 완료. Render 서비스 생성은 다음 단계 |
 
-**현재 전략**: **로컬 실행 기준으로 완성.** `./gradlew bootRun` 하나로 화면까지 동작합니다. 배포는 하지 않으며, 배포용 설정은 만들었다가 되돌렸습니다(커밋 `b0a2025` 에 보존).
+**현재 전략**: 로컬은 `./gradlew bootRun` 하나로 완결됩니다(H2). 배포는 **Render + Supabase** 조합으로 진행 중입니다 — 신용카드 등록 없이 되는 조합을 여러 후보 중에서 골랐습니다. 자세한 비교와 절차는 [docs/05_배포.md](docs/05_배포.md).
 
 **검증 결과** — `./gradlew test` **36건 전부 통과** + 실행 중인 서버에서 직접 확인:
 - 비밀번호가 평문이 아닌 BCrypt 해시(`$2a$10$…`, 60자)로 저장되고, 같은 비밀번호도 사용자마다 다른 해시(salt)가 된다
